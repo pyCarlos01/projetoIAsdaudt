@@ -70,8 +70,8 @@ class Relatorios(LoginRequiredMixin, TemplateView):
             elif funcao != None and status != None and empresa != None:
                 download_colaboradores(request, funcao, status, empresa)
             else:
-                download_disponibilidade(request)
-
+                # download_disponibilidade(request)
+                download_data_as_xlsx(request)
             return redirect('IAs:relatorios')
 
 class Remessas(LoginRequiredMixin, CreateView):
@@ -460,3 +460,38 @@ def horas_extras(request, data, arq):
     except:
         return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
+
+
+from django.http import HttpResponse
+from openpyxl import Workbook
+
+
+def download_data_as_xlsx(request):
+    # Obtenha os dados do modelo
+    if request.method == 'POST':
+        queryset = Frota.objects.all()
+
+        # Crie um novo Workbook e selecione a planilha ativa
+        workbook = Workbook()
+        worksheet = workbook.active
+
+
+        # Preencha as linhas com os dados do modelo
+        for obj in queryset:
+            data_row = [obj.coluna1, obj.coluna2, obj.coluna3]  # Substitua pelas colunas relevantes do seu modelo
+            worksheet.append(data_row)
+
+        # Defina o nome do arquivo
+        filename = 'dados.xlsx'
+
+        # Configure a resposta para download
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+        # Salve o Workbook na resposta
+        workbook.save(response)
+
+        return response
+
+
+
