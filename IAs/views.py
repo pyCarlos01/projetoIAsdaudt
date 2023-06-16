@@ -350,8 +350,8 @@ def download_colaboradores(request, funcao, status, empresa):
         df = pd.DataFrame(list(queryset.values()))
 
         # Defina o caminho e nome do arquivo Excel de saída
-        caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
-        output_filename = caminho + f'\Colaboradores.xlsx'
+        # caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
+        output_filename = f'\Colaboradores.xlsx'
 
         # Exporte o DataFrame para um arquivo Excel
         df.to_excel(output_filename, index=False)
