@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+Escala Semi-Automática
+{% endblock %}
+
+{% block content %}
+<header class="min-h-screen bg-black bg-opacity-25 bg-blend-overlay showcase justify-center bg-no-repeat bg-cover bg-center"  style="background-image: url('{% static 'image/FundoHomeFrotas.jpg' %}')">
+    <div class="px-3 py-14">
+    <table>
+        <tbody>
+            <tr>
+                <th>
+                    <button class="btn btn-outline-secondary" onclick="novaRemessa(1)" style="font-size: 0.75rem;">Novo</button>
+                </th>
+                <th style="width: 10%;">
+                    <br><br><br>
+                </th>
+                <th>
+                    <a href="{% url 'IAs:remessa' %}">
+                        <button class="btn btn-outline-secondary" style="font-size: 0.75rem;">Carregar Remessa</button>
+                    </a>
+                </th>
+                <th style="width: 10%;">
+                    <br><br><br>
+                </th>
+                <th>
+                    <a href="{% url 'IAs:downloadescala' %}">
+                        <input type="button" class="btn btn-outline-secondary" style="font-size: 0.75rem;" value="Baixar">
+                    </a>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <dialog id="dialog_remessa" class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+        <form name="Form" id="Form" method="POST" action="{% url 'IAs:escala' %}" class="form-horizontal" autocomplete="off">
+            {% csrf_token %}
+            <table style="border-collapse: collapse" class="bg-gray table-borderless">
+                <tbody>
+                    <tr>
+                        <td style="width:20%;">
+                            <div class="entry">
+                               <label class="label" for="remessa1">Remessa:</label>
+                                <br>
+                                <span class="input">
+                                    <input class="input rounded-md bg-gray-300" type="text" name="remessa1" id="remessa1" maxlength="3" style="width:60%; height:25px; border: #CCC solid 1px;" required readonly="True" autofocus="autofocus">
+                                    <img src="{% static 'image/lupa.png' %}" style="display: inline-block;width:9%; height:20px;" onclick="remessaEncaixe(1)">
+                                    <br>
+                                    <img src="{% static 'image/lixeira.png' %}" id="limpar1" style="display: none; inline-block;width:9%; height:25px;" onclick="limparEncaixe(1)">
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 5%;">
+                            <br>
+                        </td>
+                        <td style="width: 10%;">
+                            <div class="entry">
+                                <label class="input" for="tipo1">Categoria Carga:</label>
+                                <br>
+                                <input class="rounded-md bg-gray-300" type="text" name="tipo1" id="tipo1" style="width:100%; height:25px; border: #CCC solid 1px;" required readonly>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <br>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;">
+                            <div class="entry">
+                               <label class="label" for="frota1">Frota:</label>
+                                <br>
+                                <span class="input">
+                                    <input class="input rounded-md bg-gray-300" type="text" name="frota1" id="frota1" maxlength="3" style="width:20%; height:25px; border: #CCC solid 1px;" required readonly="True">
+                                    <img src="{% static 'image/lupa.png' %}" style="display: inline-block;width:9%; height:20px;" onclick="carregarFrotas(1)">
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;">
+                            <div class="entry">
+                               <label class="label" for="placa1">Placa:</label>
+                                <br>
+                                <input class="input rounded-md bg-gray-300" type="text" name="placa1" id="placa1" style="width:40%; height:25px; border: #CCC solid 1px;" required readonly="True">
+                            </div>
+                        <td style="width: 20%;">
+                            <div class="entry">
+                               <label class="label" for="motorista1">Motorista:</label>
+                                <br>
+                                <span class="input">
+                                    <input class="input rounded-md bg-gray-300 border-gray-600" type="text" name="motorista1" id="motorista1" style="width:89%; height:26px; border: #CCC solid 1px;" required readonly="True">
+                                     <img src="{% static 'image/lupa.png' %}" style="display: inline-block;width:9%; height:20px;" onclick="novoMotorista(1)">
+                                </span>
+                            </div>
+                        </td>
+                        <td style="width: 5%;">
+                            <br>
+                        </td>
+                        <td>
+                            <div class="entry">
+                                <label class="input" for="ajudante1">Ajudante:</label>
+                                <br>
+                                <select class="rounded-md bg-gray-300" type="text" name="ajudante1" id="ajudante1" style="height:25px; border: #CCC solid 1px;" required>
+                                    <option value="" selected>Selecione</option>
+                                    {% for aj in ajudantes %}
+                                        <option value="{{aj}}">{{aj}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;">
+                            <div class="entry">
+                                <label class="label" for="peso1">Peso:</label>
+                                <br>
+                                <input class="input rounded-md bg-gray-300 border-gray-600" type="text" name="peso1" id="peso1" style="width:40%; height:25px; border: #CCC solid 1px;" required readonly="True">
+                            </div>
+                        </td>
+                        <td style="width: 10%;">
+                            <div class="entry">
+                                <label class="input" for="viagem1">Viagem:</label>
+                                <br>
+                                <select class="rounded-md bg-gray-300" type="text" name="viagem1" id="viagem1" style="height:25px; border: #CCC solid 1px;" required>
+                                    <option value="NÃO">NÃO</option>
+                                    <option value="SIM">SIM</option>
+                                </select>
+                            </div>
+                        </td>
+                    <tr>
+                        <td>
+                            <br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <label for="obs">Observação: </label>
+            <br>
+            <textarea class="border-slate-950 border-1 rounded-md" name="obs" id="obs" style="width: 100%; height: 100px;"></textarea>
+
+            <span>
+                <button class="bg-blue-600 py-1 my-2 px-3 text-white md:text-lg rounded-md" type="submit" onsubmit="fecharRemessa(1)" >Salvar</button>
+                <button class="bg-blue-600 py-1 my-2 px-3 text-white md:text-lg rounded-md" type="submit" onclick="fecharRemessa(1)">Cancelar</button>
+            </span>
+
+            <input id="entregas1" name="entregas1" hidden="hidden">
+            <input id="distancia1" name="distancia1" hidden="hidden">
+            <script src="/static/js/custom.js"></script>
+            <script>
+                const info = [
+                    {% for caracteristica in listas %}
+                    {
+                        id: '{{ caracteristica.id }}',
+                        frota: '{{ caracteristica.numero }}',
+                        placa: '{{ caracteristica.placa }}',
+                        motorista: '{{ caracteristica.motorista }}',
+                        tipo: '{{caracteristica.tipo}}',
+                        peso: {{ caracteristica.capacidade }},
+                        status: '{{caracteristica.status}}',
+                    },
+                    {% endfor %}
+                ];
+
+                const remessas = [
+                    {% for rem in remessas %}
+                    {
+                        remessa: '{{ rem.remessa }}',
+                        placa: '{{ rem.placa }}',
+                        peso: {{ rem.peso }},
+                        entregas: {{rem.entregas}},
+                        distancia: {{rem.distancia}},
+                        categoria: '{{rem.categoria}}',
+                        status: '{{rem.status}}',
+                    },
+                    {% endfor %}
+                ];
+
+                const funcao =[
+                    {% for func in motoristas %}
+                        {
+                            motorista: '{{func.nome_guerra}}',
+                            funcao: '{{func.funcao}}',
+                            status: '{{func.status}}',
+                        },
+                    {% endfor %}
+                ];
+
+            </script>
+        </form >
+    <dialog id="dialog_novoMotorista1" class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+            <form name="FormMotorista" id="FormMotorista" method="GET" action="" class="form-horizontal" autocomplete="off">
+                {% csrf_token %}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Selecione um Motorista:
+                            </td>
+                            <td>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="entry">
+                                    <ul id="ulmotorista" class="list-group list-group-flush text-center">
+                                        <li id="limotorista"></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                 <button class="btn btn-outline-primary" type="button" onclick="fechar2(1)"> Fechar </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </dialog>
+    </dialog>
+
+    <dialog id="dialog_remessas" class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+        <form name="FormRemessa" id="FormRemessa" method="" action="" class="form-horizontal" autocomplete="off">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Selecione a Remessa:
+                        </td>
+                        <td>
+                            <br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="entry">
+                                <span>
+                                    <input type="checkbox" id="check" name="check">
+                                    <label class="input">Encaixe:</label>
+                                </span>
+                                <ul id="ulremessas1"  class="list-group list-group-flush text-center">
+                                    <li id="liremessas"></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        </dialog>
+
+    <dialog id="dialog_frotas" class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+            <form name="FormFrota" id="FormFrota" method="" action="" class="form-horizontal" autocomplete="off">
+                {% csrf_token %}
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Selecione Um Frota:
+                            </td>
+                            <td>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="entry">
+                                    <ul  class="list-group list-group-flush text-center" id="ulfrotas1">
+                                        <li id="lifrotas"></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </dialog>
+
+    <div class="py-5 px-3">
+        <table class="table table-bordered border-white text-white text-center rounded-lg" id="tab">
+            <thead>
+                <tr>
+                    <th scope="col">Detalhes</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Remessa</th>
+                    <th scope="col">Frota</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Peso</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Motorista</th>
+                    <th scope="col">Ajudante</th>
+                    <th scope="col">Viajem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for esc in page_obj %}
+                <tr>
+                    <td class="gridcells">
+                        <a data-bs-toggle="modal" data-bs-target="#acoes" data-bs-whatever="@getbootstrap" onclick="edt('{{esc.data}}', {{esc.frota}}, '{{esc.placa}}', '{{esc.remessa}}', '{{esc.motorista}}', {{esc.peso}}, '{{esc.ajudante}}', '{{esc.viagem}}', '{{esc.tipo_carga}}', {{esc.entregas}}, {{esc.distancia}}, '{{esc.observacao}}')">
+                            <img src="{%static 'image/contexto.png'%}" style="display: inline-block;">
+                        </a>
+                    </td>
+                    <td class="gridcells">{{esc.data}}</td>
+                    <td class="gridcells">{{esc.remessa}}</td>
+                    <td class="gridcells">{{esc.frota}}</td>
+                    <td class="gridcells">{{esc.placa}}</td>
+                    <td class="gridcells">{{esc.peso}}</td>
+                    <td class="gridcells">{{esc.tipo_carga}}</td>
+                    <td class="gridcells">{{esc.motorista}}</td>
+                    <td class="gridcells">{{esc.ajudante}}</td>
+                    <td class="gridcells">{{esc.viagem}}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            <span class="step-links" style="margin-left:auto;margin-right:auto;text-align:center">
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-outline-secondary" href="?page=1">&laquo;</a>
+                    <a class="btn btn-outline-secondary" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+            <span class="current-page btn btn-outline-secondary">{{ page_obj.number}}</span>
+                {% if page_obj.has_next %}
+                    <a class="btn btn-outline-secondary" href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                    <a class="btn btn-outline-secondary" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                {% endif %}
+
+
+            </span>
+        </div>
+    </div>
+
+    <div class="modal fade" id="acoes" tabindex="-1" aria-labelledby="acao" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content text-black">
+                <div class="modal-header bg-blue-600">
+                    <h1 class="modal-title fs-5 text-white" id="acao">Detalhes</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">&Chi;</button>
+                </div>
+                <div class="modal-body form-group rounded-md">
+                <form>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td style="width: 16%;">
+                                <div class="mb-3">
+                                    <label for="data_edt" class="col-form-label">Data de Saída:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="data_edt" name="data_edt" readonly style="width: 100%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td style="width: 3%;"></td>
+                            <td style="width: 15%;"></td>
+                            <td style="width: 3%;"></td>
+                            <td style="width: 22%;"></td>
+                            <td style="width: 3%;"></td>
+                            <td style="width: 22%;"></td>
+                        </tr>
+                        <tr>
+                            <td><br><br></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="remessa_edt" class="col-form-label">Remessa:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="remessa_edt" name="remessa_edt" readonly style="width: 50%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="categoria_edt" class="col-form-label">Categoria:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="categoria_edt" name="categoria_edt" readonly style="width: 40%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="viagem_edt" class="col-form-label">Viagem:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="viagem_edt" name="viagem_edt" readonly style="width: 35%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br><br></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="entregas_edt" class="col-form-label">Qnty Entrega:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="entregas_edt" name="entregas_edt" readonly style="width: 25%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="distancia_edt" class="col-form-label">Distância:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="distancia_edt" name="distancia_edt" readonly style="width: 25%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="peso_edt" class="col-form-label">Peso:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="peso_edt" name="peso_edt" readonly style="width: 35%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br><br></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="frota_edt" class="col-form-label">Frota:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="frota_edt" name="frota_edt" readonly style="width: 35%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="placa_edt" class="col-form-label">Placa:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="placa_edt" name="placa_edt" readonly style="width: 60%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="motorista_edt" class="col-form-label">Motorista:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="motorista_edt" name="motorista_edt" readonly style="width: 100%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="mb-3">
+                                    <label for="ajudante_edt" class="col-form-label">Ajudante:</label>
+                                        <br>
+                                    <input type="text" class="form-control" id="ajudante_edt" name="ajudante_edt" readonly style="width: 100%; height:25px; border: #CCC solid 1px;">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br><br></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="mb-3">
+                        <label for="obs_edt" class="col-form-label">Observação:</label>
+                            <br>
+                        <textarea class="form-control border-black" id="obs_edt" name="obs_edt" readonly></textarea>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+{% endblock %}

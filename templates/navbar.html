@@ -1,0 +1,51 @@
+{% load static %}
+
+<nav class="w-full flex justify-between items-center py-3 px-4 fixed z-50">
+    <div class="w-4/6">
+        <a href="/">
+           <img src="{% static 'Image/daudt.png' %}">
+        </a>
+    </div>
+    {% if user.is_authenticated and view.template_name == 'homefrotas.html' %}
+    <div class="mr-2">
+        <a href="{% url 'IAs:escala' %}">
+            <button class="btn btn-primary">
+                Criar Escala
+            </button>
+        </a>
+    </div>
+    <div class="mr-2">
+        {% if user.is_authenticated and view.template_name == 'homefrotas.html' %}
+            <div class="dropdown">
+                <button class="btn btn-primary bg-blue-600 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Mais
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'IAs:disponibilidade' %}">Disponibilidade</a></li>
+                    <li><a class="dropdown-item" href="{% url 'IAs:colaboradores' %}">Colaboradores</a></li>
+                    <li><a class="dropdown-item" href="{% url 'IAs:relatorios' %}">Relátorios</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="mr-2">
+        {% if user.is_authenticated or view.template_name != 'homepage.html' %}
+        <a href="{% url 'IAs:logout' %}">
+            <button class="btn btn-primary">
+                Sair
+            </button>
+        </a>
+        {% else %}
+            {% if view.template_name == 'homepage.html' %}
+                <br>
+            {% else %}
+                <a href="{% url 'IAs:criarconta' %}">
+                    <button class="btn btn-primary">
+                        Criar Conta
+                    </button>
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+</nav>

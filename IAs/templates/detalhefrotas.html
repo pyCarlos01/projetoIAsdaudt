@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+Detalhes Frotas
+{% endblock %}
+
+{% block content %}
+<form name="FormMan" id="FormMan" method="POST" action="{% url 'IAs:detalhesfrotas' frota.pk %}">
+    {% csrf_token %}
+    <img src="{% static frota.imagem %}" class="bg-center">
+    <div class="container py-5 text-white">
+        <h1>Detalhes:</h1>
+        <br>
+        <table class="table table-bordered border-white text-white text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Frota</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Baú</th>
+                    <th scope="col">Capacidade</th>
+                    <th scope="col">Motorista</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input id="frota_man" name="frota_man" value="{{frota.numero}}" class="input bg-black text-white text-center w-8" readonly>
+                    </td>
+                    <td>{{frota.placa}}</td>
+                    <td>{{frota.tipo}}</td>
+                    <td>{{frota.bau}}</td>
+                    <td>{{frota.capacidade}} Kg </td>
+                        {% if frota.motorista == '-' %}
+                            <td>Não Definido</td>
+                        {% else %}
+                            <td>{{frota.motorista}}</td>
+                        {% endif %}
+            </tbody>
+            <script src="/static/js/custom.js"></script>
+        </table>
+        <br>
+        <span>
+            <h1 id="status">Status: {{frota.status}} </h1>
+                <br>
+            <button id="btn_man" class="btn btn-primary" style="display: block;">Manutenção</button>
+        </span>
+    </div>
+</form>
+{% endblock %}

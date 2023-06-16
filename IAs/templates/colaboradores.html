@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}
+
+Colaboradores
+
+{% endblock %}
+
+{% block content %}
+<header class="min-h-screen bg-black bg-opacity-75 bg-blend-overlay showcase border-gray-600 border-b-8 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'image/DisponibilidadeFundo.jpg' %}');">
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Disponíveis</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{disponiveis}}</b> colaboradores estão <b>DISPONÍVEIS</b>  para serem escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Em Rota</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{em_rota}}</b> colaboradores estão <b>EM ROTA</b> e não podem ser escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Afastados</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{afastados}}</b> colaboradores estão <b>AFASTADOS</b> e não podem ser escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Atestados</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{atestados}}</b> colaboradores estão com <b>ATESTADOS</b> e não podem ser escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Folgas</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{folgas}}</b> colaboradores estão de <b>FOLGA</b> e não podem ser escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                <div>
+                    <span class="inline-flex items-center justify-center p-2 bg-indigo-500 rounded-md shadow-lg">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><!-- ... --></svg>
+                    </span>
+                </div>
+                <h3 class="text-slate-900 dark:text-white mt-5 text-base font-medium tracking-tight">Férias</h3>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+                    <b>{{ferias}}</b> colaboradores estão depreciando <b>FÉRIAS</b> e não podem ser escalados.
+                </p>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cadastroColaboradores" data-bs-whatever="col">Novo Cadastro</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#alterarColaboradores" data-bs-whatever="col">Alterar Dados</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#horarioHE" data-bs-whatever="col">Hora Extra</button>
+        </div>
+    </div>
+    <div class="modal fade" id="cadastroColaboradores" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-black">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Novo Colaborador</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: red;">&Chi;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form name="Form_cad" id="Form_cad" action="{% url 'IAs:colaboradores' %}" method="POST" autocomplete="off">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="nome_cad" class="col-form-label">Nome:</label>
+                                    <br>
+                                    <input class="input rounded-md form-control" type="text" id="nome_cad" name="nome_cad" required >
+                                    </div>
+                                <div class="mb-3">
+                                    <label for="nomeguerra_cad" class="col-form-label">Nome Guerra:</label>
+                                    <br>
+                                    <input class="input rounded-md form-control" type="text" id="nomeguerra_cad" name="nomeguerra_cad" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="funcao_cad" class="col-form-label">Função:</label>
+                                        <br>
+                                        <select id="funcao_cad" name="funcao_cad" class="select rounded-md form-control" required>
+                                            <option value="" selected>Selecione uma função</option>
+                                            <option value="MOTORISTA VUC">MOTORISTA VUC</option>
+                                            <option value="MOTORISTA MÉDIO">MOTORISTA MÉDIO</option>
+                                            <option value="MOTORISTA PESADO">MOTORISTA PESADO</option>
+                                            <option value="AJUDANTE">AJUDANTE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="empresa_cad" class="col-form-label">Empresa:</label>
+                                        <br>
+                                        <select id="empresa_cad" name="empresa_cad" class="select rounded-md form-control" required>
+                                            <option value="" selected>Selecione uma Empresa</option>
+                                            <option value="IPIRANGA">IPIRANGA</option>
+                                            <option value="SHELL">SHELL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                                </div>
+                           </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="modal fade" id="alterarColaboradores" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-black">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="alterarCol">Alterar Dados Colaborador</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: red;">&Chi;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form name="Form_alt" id="Form_alt" action="{% url 'IAs:colaboradores' %}" method="POST" autocomplete="off">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="nome_alt" class="col-form-label">Nome:</label>
+                                    <br>
+                                    <select id="nome_alt" name="nome_alt" class="select rounded-md form-control" onclick="alterarColaborador()" required>
+                                        <option value="" selected>Selecione um Colaborador</option>
+                                        {% for colab in funcionarios %}
+                                            <option value="{{colab.nome}}">{{colab.nome}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nomeguerra_alt" class="col-form-label">Nome Guerra:</label>
+                                    <br>
+                                    <input class="input rounded-md form-control" type="text" id="nomeguerra_alt" name="nomeguerra_alt" required readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="funcao_alt" class="col-form-label">Função:</label>
+                                        <br>
+                                        <select id="funcao_alt" name="funcao_alt" class="select rounded-md form-control" required>
+                                            <option value="" selected>Selecione</option>
+                                            <option value="MOTORISTA VUC">MOTORISTA VUC</option>
+                                            <option value="MOTORISTA MÉDIO">MOTORISTA MÉDIO</option>
+                                            <option value="MOTORISTA PESADO">MOTORISTA PESADO</option>
+                                            <option value="AJUDANTE">AJUDANTE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="status_alt" class="col-form-label">Disponibilidade:</label>
+                                        <br>
+                                        <select id="status_alt" name="status_alt" class="select rounded-md form-control" onclick="definirPrazo()" required>
+                                            <option value="" selected>Selecione</option>
+                                            <option value="DISPONÍVEL">DISPONÍVEL</option>
+                                            <option value="EM ROTA">EM ROTA</option>
+                                            <option value="FOLGA">FOLGA</option>
+                                            <option value="ATESTADO">ATESTADO</option>
+                                            <option value="AFASTADO">AFASTADO</option>
+                                            <option value="FÉRIAS">FÉRIAS</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="empresa_alt" class="col-form-label">Empresa:</label>
+                                        <br>
+                                        <select id="empresa_alt" name="empresa_alt" class="select rounded-md form-control" required>
+                                            <option value="" selected>Selecione</option>
+                                            <option value="IPIRANGA">IPIRANGA</option>
+                                            <option value="SHELL">SHELL</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <span class="input">
+                                            <label for="prazo_alt" id="label_alt" class="col-form-label" style="display: none;">Prazo:</label>
+                                            <br>
+                                            <input class="input rounded-md form-control" type="date" id="prazo_alt" name="prazo_alt" style="display: none;">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>
+                                    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+                                </div>
+                           </form>
+                            <script src="/static/js/custom.js"></script>
+                            <script>
+                                const colaboradores = [
+                                    {% for col in funcionarios %}
+                                        {
+                                            nome: '{{col.nome}}',
+                                            nome_guerra: '{{col.nome_guerra}}',
+                                            funcao: '{{col.funcao}}',
+                                            status: '{{col.status}}',
+                                            empresa: '{{col.empresa}}',
+                                        },
+                                    {% endfor %}
+                                ];
+                                console.log(colaboradores);
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div class="modal fade" id="horarioHE" tabindex="-1" aria-labelledby="horarioHE1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form name="Form_hs" id="Form_hs" action="" method="POST" autocomplete="off">
+                    {% csrf_token %}
+                <div class="modal-content bg-white text-black dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
+                    <div class="modal-header bg-blue-600 text-white">
+                        <h1 class="modal-title fs-5" id="horarioSaida1">Hora Extra</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" name="arq_he" id="arq_he" directory required>
+                        <br><br>
+                        <label for="data_he"> Selecione a Data:</label>
+                        <br><br>
+                        <input name="data_he" id="data_he" type="date" class="form-control rounded-md" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-outline-primary">Baixar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>
+
+{% endblock %}

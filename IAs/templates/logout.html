@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+Logout
+{% endblock %}
+
+{% block content %}
+<header class="min-h-screen bg-black bg-opacity-75 bg-blend-overlay showcase border-gray-600 border-b-8 flex justify-center items-center bg-no-repeat bg-cover bg-center"  style="background-image: url('{% static 'image/Ford_Cargo.jpg' %}');">
+    <div class="z-10 h-full py-32 md:py-0 text-gray-100 text-center flex items-center flex-col">
+        <h2 class="text-2xl">Você saiu da sua conta!</h2>
+        <div class="flex flex-nowrap justify-center space-x-5 p-5">
+        <a href="{% url 'IAs:login' %}"><button class="bg-blue-600  py-1 px-3 text-white md:text-lg rounded-md">Fazer Login</button></a>
+<!--            <a href="{% url 'IAs:criarconta' %}"><button class="bg-blue-600 py-1 px-3 text-white md:text-lg rounded-md">Criar uma Conta</button></a>-->
+        </div>
+    </div>
+</header>
+
+<footer class=" px-5 py-10 ">
+    <ul class="flex justify-between items-center">
+
+        <li>&copy; 2021</li>
+        <li> Feito com Python (Django)</li>
+        <li>Carlos Damião</li>
+    </ul>
+</footer>
+{% endblock %}
