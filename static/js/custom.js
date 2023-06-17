@@ -134,8 +134,10 @@ function dispClasse(dados, tipo) {
     document.getElementById('disp_classes1').showModal();
     document.getElementById('desc_classes' + dados).innerText = 'Veículos filtrados, referentes a classe ' + tipo
 
+    let text = tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase();
+
     img = document.querySelector('#imgclasses' + dados);
-    img.src = '/static/image/' + tipo + '.jpg'
+    img.src = '/static/image/' + text + '.jpg'
 
     info.forEach(frotas => {
         if(tipo == frotas.tipo){
