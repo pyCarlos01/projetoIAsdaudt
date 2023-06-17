@@ -335,10 +335,10 @@ def download_horario_saida(request, data):
 def download_colaboradores(request, funcao, status, empresa):
     # try:
         if request.method == 'POST':
-            if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.all()
-            else:
-                pass
+            # if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+            #     queryset = Colaboradores.objects.all()
+            # else:
+            #     pass
             # elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
             #     queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
             # elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
@@ -353,8 +353,8 @@ def download_colaboradores(request, funcao, status, empresa):
             #     queryset = Colaboradores.objects.filter(status=status).all()
 
             # Crie um DataFrame com os dados do modelo
+            queryset = Colaboradores.objects.all()
             df = pd.DataFrame(list(queryset.values()))
-            df = df[['nome','nome_guerra']]
 
             # Defina o caminho e nome do arquivo Excel de saída
             output_filename =f'/Colaboradores.xlsx'
@@ -369,7 +369,7 @@ def download_colaboradores(request, funcao, status, empresa):
             return response
     # except:
     #         return redirect('IAs:escala')
-        return render(request, 'relatorios.html')
+    #     return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
