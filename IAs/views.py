@@ -134,45 +134,44 @@ def escala(request):
     page_obj = paginator.get_page(page_number)
 
     try:
-
         # Pegar dados das planilhas exportadas
         caminho = 'media/remessas/'
         arquivos = os.listdir(caminho)
-
-        try:
-            for arq in arquivos:
-                df = pd.read_excel(caminho + arq)
-
-                # Escolher colunas que entrarão na base
-                planilha = df[['Remessa','Categoria','Placa','Distância total','Peso (KG)', 'Qtd. Entregas']]
-
-                # Loop para pegar e adicionar linha por linha
-                for i in planilha.iterrows():
-                    # Tratar remessa antes de salvar
-                    t_remessa = str(i[1][0]).replace('AMPM.', '')
-
-                    if str(i[1][1]) == 'CONGELADO':
-                        t_categoria = 'CONG'
-                    else:
-                        t_categoria = str(i[1][1])
-
-                    # Evitar os valores nulos
-                    if t_remessa == 'nan':
-                        pass
-                    else:
-                        # Verificar se a remessa existe para não cadastrar novamente no database
-                        if Remessa.objects.filter(remessa = t_remessa).exists():
-                            pass
-                        else:
-                            # Salvar no database
-                            remessa = Remessa(remessa = t_remessa, categoria = t_categoria, placa = i[1][2], distancia = i[1][3], peso = i[1][4], entregas = i[1][5])
-                            remessa.save()
-        except:
-            os.remove(caminho + arq)
-
-        remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
     except:
         pass
+
+    try:
+        for arq in arquivos:
+            df = pd.read_excel(caminho + arq)
+
+            # Escolher colunas que entrarão na base
+            planilha = df[['Remessa','Categoria','Placa','Distância total','Peso (KG)', 'Qtd. Entregas']]
+
+            # Loop para pegar e adicionar linha por linha
+            for i in planilha.iterrows():
+                # Tratar remessa antes de salvar
+                t_remessa = str(i[1][0]).replace('AMPM.', '')
+
+                if str(i[1][1]) == 'CONGELADO':
+                    t_categoria = 'CONG'
+                else:
+                    t_categoria = str(i[1][1])
+
+                # Evitar os valores nulos
+                if t_remessa == 'nan':
+                    pass
+                else:
+                    # Verificar se a remessa existe para não cadastrar novamente no database
+                    if Remessa.objects.filter(remessa = t_remessa).exists():
+                        pass
+                    else:
+                        # Salvar no database
+                        remessa = Remessa(remessa = t_remessa, categoria = t_categoria, placa = i[1][2], distancia = i[1][3], peso = i[1][4], entregas = i[1][5])
+                        remessa.save()
+    except:
+        os.remove(caminho + arq)
+
+    remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
 
     try:
         # Tratar período ausente baseado no dia da escala
