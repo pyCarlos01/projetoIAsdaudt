@@ -62,8 +62,6 @@ class Relatorios(LoginRequiredMixin, TemplateView):
             status = request.POST.get('status_down')
             empresa = request.POST.get('empresa_down')
 
-            print(data, funcao, empresa, status)
-
             if data != None:
                 return download_horario_saida(request, data)
             elif funcao != None and status != None and empresa != None:
