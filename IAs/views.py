@@ -335,7 +335,8 @@ def download_horario_saida(request, data):
 def download_colaboradores(request, funcao, status, empresa):
     # try:
         if request.method == 'POST':
-            # if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+            if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+                return redirect('IAs:escala')
                 # queryset = Colaboradores.objects.all()
             # elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
             #     queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
@@ -365,7 +366,7 @@ def download_colaboradores(request, funcao, status, empresa):
             #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
             # return response
     # except:
-            return redirect('IAs:escala')
+    #         return redirect('IAs:escala')
     #     return render(request, 'relatorios.html')
 
 def controle_func(request):
