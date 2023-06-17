@@ -244,32 +244,32 @@ def escala(request):
     return render(request, 'escala.html', {'listas':listas, 'escalas':escalas, 'ajudantes': ajudantes, 'motoristas':motoristas, 'remessas': remessas, 'page_obj': page_obj})
 
 def download_escala(request):
-    try:
-        if request.method == 'POST':
-            data = request.POST.get('data1')
+    # try:
+    if request.method == 'POST':
+        data = request.POST.get('data1')
 
-            queryset = Escala.objects.filter(data = data).all()
+        queryset = Escala.objects.filter(data = data).all()
 
-            # Crie um DataFrame com os dados do modelo
-            df = pd.DataFrame(list(queryset.values()))
+        # Crie um DataFrame com os dados do modelo
+        df = pd.DataFrame(list(queryset.values()))
 
-            df = df[['remessa','tipo_carga','frota','placa','motorista', 'viagem','ajudante']]
-            df = df.rename(columns={'remessa':'REMESSA', 'tipo_carga': 'CATEGORIA', 'frota': 'FROTA', 'placa': 'PLACA', 'motorista': 'MOTORISTA', 'viagem': 'VIAGEM', 'ajudante': 'AJUDANTE' })
+        df = df[['remessa','tipo_carga','frota','placa','motorista', 'viagem','ajudante']]
+        df = df.rename(columns={'remessa':'REMESSA', 'tipo_carga': 'CATEGORIA', 'frota': 'FROTA', 'placa': 'PLACA', 'motorista': 'MOTORISTA', 'viagem': 'VIAGEM', 'ajudante': 'AJUDANTE' })
 
-            # Defina o caminho e nome do arquivo Excel de saída
-            caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
-            output_filename = caminho + f'\Escala-{data}.xlsx'
+        # Defina o caminho e nome do arquivo Excel de saída
+        caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
+        output_filename = caminho + f'\Escala-{data}.xlsx'
 
-            # Exporte o DataFrame para um arquivo Excel
-            df.to_excel(output_filename, index=False)
+        # Exporte o DataFrame para um arquivo Excel
+        df.to_excel(output_filename, index=False)
 
-            # Abra o arquivo Excel para download
-            with open(output_filename, 'rb') as file:
-                response = HttpResponse(file.read(),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
-            return response
-    except:
-        return redirect('IAs:escala')
+        # Abra o arquivo Excel para download
+        with open(output_filename, 'rb') as file:
+            response = HttpResponse(file.read(),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+        return response
+    # except:
+    #     return redirect('IAs:escala')
     return render(request, 'download_escala.html')
 
 def download_disponibilidade(request):
