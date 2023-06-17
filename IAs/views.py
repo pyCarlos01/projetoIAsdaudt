@@ -336,8 +336,9 @@ def download_colaboradores(request, funcao, status, empresa):
     # try:
         if request.method == 'POST':
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                return redirect('IAs:escala')
-                # queryset = Colaboradores.objects.all()
+                queryset = Colaboradores.objects.all()
+            else:
+                redirect('IAs:escala')
             # elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
             #     queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
             # elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
@@ -352,19 +353,19 @@ def download_colaboradores(request, funcao, status, empresa):
             #     queryset = Colaboradores.objects.filter(status=status).all()
 
             # Crie um DataFrame com os dados do modelo
-            # df = pd.DataFrame(list(queryset.values()))
-            #
-            # # Defina o caminho e nome do arquivo Excel de saída
-            # output_filename =f'/Colaboradores.xlsx'
-            #
-            # # Exporte o DataFrame para um arquivo Excel
-            # df.to_excel(output_filename, index=False)
-            #
-            # # Abra o arquivo Excel para download
-            # with open(output_filename, 'rb') as file:
-            #     response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
-            # return response
+            df = pd.DataFrame(list(queryset.values()))
+
+            # Defina o caminho e nome do arquivo Excel de saída
+            output_filename =f'/Colaboradores.xlsx'
+
+            # Exporte o DataFrame para um arquivo Excel
+            df.to_excel(output_filename, index=False)
+
+            # Abra o arquivo Excel para download
+            with open(output_filename, 'rb') as file:
+                response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+            return response
     # except:
     #         return redirect('IAs:escala')
     #     return render(request, 'relatorios.html')
