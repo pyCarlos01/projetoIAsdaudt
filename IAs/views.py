@@ -336,25 +336,22 @@ def download_colaboradores(request, funcao, status, empresa):
     try:
         if request.method == 'POST':
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.filter(empresa='IPIRANGA').all()
-            elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
-            elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(empresa=empresa).all()
-            elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
-            elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
-            elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao).all()
-            else:
-                queryset = Colaboradores.objects.filter(status=status).all()
+                queryset = Escala.objects.all()
 
             # Crie um DataFrame com os dados do modelo
             df = pd.DataFrame(list(queryset.values()))
+            df = df[['remessa', 'frota', 'placa', 'tipo_carga', 'peso', 'motorista']]
+            df['Entrega NF'] = ''
+            df['Saída'] = ''
+            df['Observação'] = ''
+
+            df = df.rename(
+                columns={'remessa': 'Remessa', 'frota': 'Frota', 'placa': 'Placa', 'tipo_carga': 'Categoria', 'peso': 'Peso',
+                         'motorista': 'Motorista'})
 
             # Defina o caminho e nome do arquivo Excel de saída
-            output_filename =f'/Colaboradores.xlsx'
+
+            output_filename = f'\Horário de Saída.xlsx'
 
             # Exporte o DataFrame para um arquivo Excel
             df.to_excel(output_filename, index=False)
@@ -367,6 +364,40 @@ def download_colaboradores(request, funcao, status, empresa):
     except:
         return Colaboradores.objects.all()
     return render(request, 'relatorios.html')
+
+
+    #         if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+    #             queryset = Colaboradores.objects.all()
+    #         elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
+    #             queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
+    #         elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+    #             queryset = Colaboradores.objects.filter(empresa=empresa).all()
+    #         elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
+    #             queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
+    #         elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+    #             queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
+    #         elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+    #             queryset = Colaboradores.objects.filter(funcao=funcao).all()
+    #         else:
+    #             queryset = Colaboradores.objects.filter(status=status).all()
+    #
+    #         # Crie um DataFrame com os dados do modelo
+    #         df = pd.DataFrame(list(queryset.values()))
+    #
+    #         # Defina o caminho e nome do arquivo Excel de saída
+    #         output_filename =f'/Colaboradores.xlsx'
+    #
+    #         # Exporte o DataFrame para um arquivo Excel
+    #         df.to_excel(output_filename, index=False)
+    #
+    #         # Abra o arquivo Excel para download
+    #         with open(output_filename, 'rb') as file:
+    #             response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    #             response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+    #         return response
+    # except:
+    #     return Colaboradores.objects.all()
+    # return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
