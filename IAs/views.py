@@ -66,11 +66,10 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 
             if data != None:
                 return download_horario_saida(request, data)
-                # download_horario_saida(request, data)
             elif funcao != None and status != None and empresa != None:
-                download_colaboradores(request, funcao, status, empresa)
+                return download_colaboradores(request, funcao, status, empresa)
             else:
-                download_disponibilidade(request)
+                return download_disponibilidade(request)
 
             # return redirect('IAs:relatorios')
 
@@ -279,7 +278,7 @@ def download_escala(request):
     return render(request, 'download_escala.html')
 
 def download_disponibilidade(request):
-    # try:
+    try:
         if request.method == 'POST':
 
             queryset = Frota.objects.filter(empresa = 'IPIRANGA').all()
@@ -301,9 +300,9 @@ def download_disponibilidade(request):
                 response = HttpResponse(file.read(),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
             return response
-    # except:
-        # return redirect('IAs:escala')
-        return render(request, 'relatorios.html')
+    except:
+        return redirect('IAs:escala')
+    return render(request, 'relatorios.html')
 
 def download_horario_saida(request, data):
     try:
@@ -334,40 +333,42 @@ def download_horario_saida(request, data):
     except:
         return redirect('IAs:escala')
     return render(request, 'relatorios.html')
+
 def download_colaboradores(request, funcao, status, empresa):
     try:
+        if request.method == 'POST':
+            if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+                queryset = Colaboradores.objects.all()
+            elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
+                queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
+            elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+                queryset = Colaboradores.objects.filter(empresa=empresa).all()
+            elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
+                queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
+            elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+                queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
+            elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+                queryset = Colaboradores.objects.filter(funcao=funcao).all()
+            else:
+                queryset = Colaboradores.objects.filter(status=status).all()
 
-        if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-            queryset = Colaboradores.objects.all()
-        elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
-            queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
-        elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-            queryset = Colaboradores.objects.filter(empresa=empresa).all()
-        elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
-            queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
-        elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-            queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
-        elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-            queryset = Colaboradores.objects.filter(funcao=funcao).all()
-        else:
-            queryset = Colaboradores.objects.filter(status=status).all()
+            # Crie um DataFrame com os dados do modelo
+            df = pd.DataFrame(list(queryset.values()))
 
-        # Crie um DataFrame com os dados do modelo
-        df = pd.DataFrame(list(queryset.values()))
+            # Defina o caminho e nome do arquivo Excel de saída
+            output_filename =f'/Colaboradores.xlsx'
 
-        # Defina o caminho e nome do arquivo Excel de saída
-        output_filename =f'/Colaboradores.xlsx'
+            # Exporte o DataFrame para um arquivo Excel
+            df.to_excel(output_filename, index=False)
 
-        # Exporte o DataFrame para um arquivo Excel
-        df.to_excel(output_filename, index=False)
-
-        # Abra o arquivo Excel para download
-        with open(output_filename, 'rb') as file:
-            response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
-        return response
+            # Abra o arquivo Excel para download
+            with open(output_filename, 'rb') as file:
+                response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+            return response
     except:
         return redirect('IAs:escala')
+    return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
