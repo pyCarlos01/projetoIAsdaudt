@@ -65,7 +65,7 @@ class Relatorios(LoginRequiredMixin, TemplateView):
             print(data, funcao, empresa, status)
 
             if data != None:
-                return redirect('IAs:escala')
+                return download_horario_saida(request, data)
                 # download_horario_saida(request, data)
             elif funcao != None and status != None and empresa != None:
                 download_colaboradores(request, funcao, status, empresa)
@@ -308,7 +308,7 @@ def download_disponibilidade(request):
 def download_horario_saida(request, data):
     # try:
         if request.method == 'POST':
-            queryset = Escala.objects.filter(data = data).all()
+            # queryset = Escala.objects.filter(data = data).all()
             #
             # # Crie um DataFrame com os dados do modelo
             # df = pd.DataFrame(list(queryset.values()))
@@ -332,7 +332,7 @@ def download_horario_saida(request, data):
             #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
             # return response
     # except:
-        return redirect('IAs:escala')
+            return redirect('IAs:escala')
     # return render(request, 'relatorios.html')
 def download_colaboradores(request, funcao, status, empresa):
     try:
