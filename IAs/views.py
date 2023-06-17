@@ -336,7 +336,7 @@ def download_colaboradores(request, funcao, status, empresa):
     try:
         if request.method == 'POST':
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.all()
+                queryset = Colaboradores.objects.filter(empresa='IPIRANGA').all()
             elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
                 queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
             elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
