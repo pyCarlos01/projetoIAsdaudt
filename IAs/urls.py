@@ -15,7 +15,6 @@ urlpatterns = [
     path('homefrotas/disponibilidade/', disponibilidade, name='disponibilidade'),
     path('homefrotas/escala/', escala, name = 'escala'),
     path('homefrotas/escala/download/', download_escala, name='downloadescala'),
-    path('homefrotas/escala/download/baixando', exportar_tab, name='down'),
     path('homefrotas/relatorios/download/', Relatorios.as_view(), name='relatorios'),
     path('homefrotas/colaboradores/', controle_func, name='colaboradores'),
 

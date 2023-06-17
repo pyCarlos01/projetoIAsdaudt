@@ -1,5 +1,4 @@
 import os
-import xlwt
 import pandas as pd
 from .forms import *
 from .models import *
@@ -247,30 +246,30 @@ def escala(request):
 def download_escala(request):
     # try:
     if request.method == 'POST':
-        data = request.POST.get('data1')
-
-        queryset = Escala.objects.filter(data = data).all()
-
-        # Crie um DataFrame com os dados do modelo
-        df = pd.DataFrame(list(queryset.values()))
-
-        df = df[['remessa','tipo_carga','frota','placa','motorista', 'viagem','ajudante']]
-        df = df.rename(columns={'remessa':'REMESSA', 'tipo_carga': 'CATEGORIA', 'frota': 'FROTA', 'placa': 'PLACA', 'motorista': 'MOTORISTA', 'viagem': 'VIAGEM', 'ajudante': 'AJUDANTE' })
-
-        # Defina o caminho e nome do arquivo Excel de saída
-        caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
-        output_filename = caminho + f'\Escala-{data}.xlsx'
-
-        # Exporte o DataFrame para um arquivo Excel
-        df.to_excel(output_filename, index=False)
-
-        # Abra o arquivo Excel para download
-        with open(output_filename, 'rb') as file:
-            response = HttpResponse(file.read(),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
-        return response
-    # except:
-    #     return redirect('IAs:escala')
+    #     data = request.POST.get('data1')
+    #
+    #     queryset = Escala.objects.filter(data = data).all()
+    #
+    #     # Crie um DataFrame com os dados do modelo
+    #     df = pd.DataFrame(list(queryset.values()))
+    #
+    #     df = df[['remessa','tipo_carga','frota','placa','motorista', 'viagem','ajudante']]
+    #     df = df.rename(columns={'remessa':'REMESSA', 'tipo_carga': 'CATEGORIA', 'frota': 'FROTA', 'placa': 'PLACA', 'motorista': 'MOTORISTA', 'viagem': 'VIAGEM', 'ajudante': 'AJUDANTE' })
+    #
+    #     # Defina o caminho e nome do arquivo Excel de saída
+    #     caminho = r"C:\Users\{}\Downloads".format(os.getlogin())
+    #     output_filename = caminho + f'\Escala-{data}.xlsx'
+    #
+    #     # Exporte o DataFrame para um arquivo Excel
+    #     df.to_excel(output_filename, index=False)
+    #
+    #     # Abra o arquivo Excel para download
+    #     with open(output_filename, 'rb') as file:
+    #         response = HttpResponse(file.read(),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    #         response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+    #     return response
+    # # except:
+        return redirect('IAs:escala')
     return render(request, 'download_escala.html')
 
 def download_disponibilidade(request):
@@ -462,40 +461,3 @@ def horas_extras(request, data, arq):
     except:
         return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
-
-def export(model, filename, queryset, columns):
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
-
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet(model)
-
-    row_num = 0
-
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
-
-    for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num], font_style)
-
-    default_style = xlwt.XFStyle()
-    rows = queryset
-
-    for row, rowdata in enumerate(rows):
-        row_num +=1
-        for col, val in enumerate (rowdata):
-            ws.write(row_num, col, val, default_style)
-    wb.save(response)
-
-def exportar_tab(request):
-    model = Frota
-    filename = 'nome arq'
-    queryset = Frota.objects.all().values_list('numero', 'placa')
-    columns = ('Frota', 'Placa')
-    response = export(model, filename, queryset, columns)
-    return response
-
-
-
-
-
