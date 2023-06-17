@@ -337,18 +337,18 @@ def download_colaboradores(request, funcao, status, empresa):
         if request.method == 'POST':
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
                 queryset = Colaboradores.objects.all()
-            elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
-            elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(empresa=empresa).all()
-            elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
-            elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
-            elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
-                queryset = Colaboradores.objects.filter(funcao=funcao).all()
-            else:
-                queryset = Colaboradores.objects.filter(status=status).all()
+            # elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
+            #     queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
+            # elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+            #     queryset = Colaboradores.objects.filter(empresa=empresa).all()
+            # elif funcao != 'TODOS' and status != 'TODOS' and empresa == 'TODOS':
+            #     queryset = Colaboradores.objects.filter(funcao=funcao, status=status).all()
+            # elif funcao != 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
+            #     queryset = Colaboradores.objects.filter(funcao=funcao, empresa=empresa).all()
+            # elif funcao != 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
+            #     queryset = Colaboradores.objects.filter(funcao=funcao).all()
+            # else:
+            #     queryset = Colaboradores.objects.filter(status=status).all()
 
             # Crie um DataFrame com os dados do modelo
             df = pd.DataFrame(list(queryset.values()))
