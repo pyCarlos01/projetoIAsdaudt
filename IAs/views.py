@@ -65,13 +65,14 @@ class Relatorios(LoginRequiredMixin, TemplateView):
             print(data, funcao, empresa, status)
 
             if data != None:
-                download_horario_saida(request, data)
+                return redirect('IAs:escala')
+                # download_horario_saida(request, data)
             elif funcao != None and status != None and empresa != None:
                 download_colaboradores(request, funcao, status, empresa)
             else:
                 download_disponibilidade(request)
 
-            return redirect('IAs:relatorios')
+            # return redirect('IAs:relatorios')
 
 class Remessas(LoginRequiredMixin, CreateView):
     template_name = 'remessa.html'
