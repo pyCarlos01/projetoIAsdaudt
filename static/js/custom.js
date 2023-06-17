@@ -420,16 +420,16 @@ function edt(d, f, p, r, m, k, a, v, t, e, l, o){
 
 }
 
-function limpar_H(){
-    document.getElementById('datahorariosaida').value = ""
-}
-
-function limpar_E(){
-    document.getElementById('data1').value = ""
-}
-
-function limpar_C(){
-    document.getElementById('funcao_down').value = ""
-    document.getElementById('status_down').value = ""
-    document.getElementById('empresa_down').value = ""
-}
+//function limpar_H(){
+//    document.getElementById('datahorariosaida').value = ""
+//}
+//
+//function limpar_E(){
+//    document.getElementById('data1').value = ""
+//}
+//
+//function limpar_C(){
+//    document.getElementById('funcao_down').value = ""
+//    document.getElementById('status_down').value = ""
+//    document.getElementById('empresa_down').value = ""
+//}
