@@ -57,7 +57,6 @@ class Relatorios(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt, name='dispatch')
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            print('boa')
             data = request.POST.get('datahorariosaida')
             funcao = request.POST.get('funcao_down')
             status = request.POST.get('status_down')
@@ -306,34 +305,34 @@ def download_disponibilidade(request):
         return render(request, 'relatorios.html')
 
 def download_horario_saida(request, data):
-    try:
+    # try:
         if request.method == 'POST':
-            queryset = Escala.objects.filter(data = data).all()
-
-            # Crie um DataFrame com os dados do modelo
-            df = pd.DataFrame(list(queryset.values()))
-            df = df[['remessa','frota', 'placa', 'tipo_carga', 'peso', 'motorista']]
-            df['Entrega NF'] = ''
-            df['Saída'] = ''
-            df['Observação'] = ''
-
-            df = df.rename(columns={'remessa':'Remessa', 'frota': 'Frota','placa': 'Placa', 'tipo_carga': 'Categoria', 'peso': 'Peso', 'motorista': 'Motorista'})
-
-            # Defina o caminho e nome do arquivo Excel de saída
-
-            output_filename = f'\Horário de Saída-{data}.xlsx'
-
-            # Exporte o DataFrame para um arquivo Excel
-            df.to_excel(output_filename, index=False)
-
-            # Abra o arquivo Excel para download
-            with open(output_filename, 'rb') as file:
-                response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
-            return response
-    except:
-        return redirect('IAs:escala')
-    return render(request, 'relatorios.html')
+            # queryset = Escala.objects.filter(data = data).all()
+            #
+            # # Crie um DataFrame com os dados do modelo
+            # df = pd.DataFrame(list(queryset.values()))
+            # df = df[['remessa','frota', 'placa', 'tipo_carga', 'peso', 'motorista']]
+            # df['Entrega NF'] = ''
+            # df['Saída'] = ''
+            # df['Observação'] = ''
+            #
+            # df = df.rename(columns={'remessa':'Remessa', 'frota': 'Frota','placa': 'Placa', 'tipo_carga': 'Categoria', 'peso': 'Peso', 'motorista': 'Motorista'})
+            #
+            # # Defina o caminho e nome do arquivo Excel de saída
+            #
+            # output_filename = f'\Horário de Saída-{data}.xlsx'
+            #
+            # # Exporte o DataFrame para um arquivo Excel
+            # df.to_excel(output_filename, index=False)
+            #
+            # # Abra o arquivo Excel para download
+            # with open(output_filename, 'rb') as file:
+            #     response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
+            # return response
+    # except:
+            return redirect('IAs:escala')
+    # return render(request, 'relatorios.html')
 def download_colaboradores(request, funcao, status, empresa):
     try:
 
