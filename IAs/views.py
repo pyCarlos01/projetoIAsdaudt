@@ -68,8 +68,7 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_colaboradores(request, funcao, status, empresa)
             else:
                 return download_disponibilidade(request)
-
-            # return redirect('IAs:relatorios')
+        return redirect('IAs:relatorios')
 
 class Remessas(LoginRequiredMixin, CreateView):
     template_name = 'remessa.html'
