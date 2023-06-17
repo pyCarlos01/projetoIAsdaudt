@@ -366,7 +366,7 @@ def download_colaboradores(request, funcao, status, empresa):
             return response
     # except:
     #         return redirect('IAs:escala')
-    #     return render(request, 'relatorios.html')
+        return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
