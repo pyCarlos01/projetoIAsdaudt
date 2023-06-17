@@ -263,8 +263,8 @@ def download_escala(request):
         df = df.rename(columns={'remessa':'REMESSA', 'tipo_carga': 'CATEGORIA', 'frota': 'FROTA', 'placa': 'PLACA', 'motorista': 'MOTORISTA', 'viagem': 'VIAGEM', 'ajudante': 'AJUDANTE' })
 
         # Defina o caminho e nome do arquivo Excel de saída
-        caminho = r"\Downloads"
-        output_filename = caminho + f'\Escala-{data}.xlsx'
+        # caminho = r"\Downloads"
+        output_filename = f'\Escala-{data}.xlsx'
 
         # Exporte o DataFrame para um arquivo Excel
         df.to_excel(output_filename, index=False)
