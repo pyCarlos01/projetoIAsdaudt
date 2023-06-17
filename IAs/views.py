@@ -338,7 +338,7 @@ def download_colaboradores(request, funcao, status, empresa):
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
                 queryset = Colaboradores.objects.all()
             else:
-                redirect('IAs:escala')
+                pass
             # elif funcao == 'TODOS' and status != 'TODOS' and empresa != 'TODOS':
             #     queryset = Colaboradores.objects.filter(status=status, empresa=empresa).all()
             # elif funcao == 'TODOS' and status == 'TODOS' and empresa != 'TODOS':
@@ -354,6 +354,7 @@ def download_colaboradores(request, funcao, status, empresa):
 
             # Crie um DataFrame com os dados do modelo
             df = pd.DataFrame(list(queryset.values()))
+            df = df[['nome','nome_guerra']]
 
             # Defina o caminho e nome do arquivo Excel de saída
             output_filename =f'/Colaboradores.xlsx'
@@ -368,7 +369,7 @@ def download_colaboradores(request, funcao, status, empresa):
             return response
     # except:
     #         return redirect('IAs:escala')
-    #     return render(request, 'relatorios.html')
+        return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
