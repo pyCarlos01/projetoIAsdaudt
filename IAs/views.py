@@ -420,45 +420,45 @@ def controle_func(request):
     return render(request, 'colaboradores.html', {'funcionarios': funcionarios,'folgas': folgas, 'atestados': atestados, 'afastados': afastados,'em_rota': em_rota, 'disponiveis': disponiveis,'ferias': ferias})
 
 def horas_extras(request, data, arq):
-    try:
-        data = str(data).replace('-','')
-        data = str(data)[-2:] + '.' + str(data)[4:-2]
+    # try:
+    data = str(data).replace('-','')
+    data = str(data)[-2:] + '.' + str(data)[4:-2]
 
-        caminho = r"C:\Users\{}\Downloads\{}".format(os.getlogin(), arq)
+    # caminho = r"C:\Users\{}\Downloads\{}".format(os.getlogin(), arq)
 
-        if 'HORAS' in str(arq):
-            df = pd.read_excel(caminho, sheet_name=data)
-            df = df[['Unnamed: 3', 'Unnamed: 7', 'Unnamed: 8']]
-            print(df)
-            for i in df.iterrows():
-                # print(i[1][0], i[1][1], i[1][2])
-                if 'HORAS' in str(i[1][1]):
-                    pass
-                else:
-                    hora = str(i[1][2])[:2]
-                    minuto = str(i[1][2])[3:5]
-                    hora_n = str(i[1][1])[:2]
-                    minuto_n = str(i[1][1])[3:5]
+    if 'HORAS' in str(arq):
+        df = pd.read_excel(arq, sheet_name=data)
+        df = df[['Unnamed: 3', 'Unnamed: 7', 'Unnamed: 8']]
+        print(df)
+        for i in df.iterrows():
+            # print(i[1][0], i[1][1], i[1][2])
+            if 'HORAS' in str(i[1][1]):
+                pass
+            else:
+                hora = str(i[1][2])[:2]
+                minuto = str(i[1][2])[3:5]
+                hora_n = str(i[1][1])[:2]
+                minuto_n = str(i[1][1])[3:5]
 
-                    if 'na' in hora:
-                        if 'na' in hora_n:
-                            pass
-                        else:
-                            segundos = int(hora_n) * 3600 + int(minuto_n) * 60
-                            bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                            bd.update(horas=str(i[1][1]), tempo_s='-' + str(segundos), status1='NEGATIVO')
+                if 'na' in hora:
+                    if 'na' in hora_n:
+                        pass
                     else:
-                        segundos = int(hora) * 3600 + int(minuto) * 60
+                        segundos = int(hora_n) * 3600 + int(minuto_n) * 60
                         bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                        bd.update(horas=str(i[1][2]), tempo_s=segundos, status1 = 'POSITIVO')
+                        bd.update(horas=str(i[1][1]), tempo_s='-' + str(segundos), status1='NEGATIVO')
+                else:
+                    segundos = int(hora) * 3600 + int(minuto) * 60
+                    bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
+                    bd.update(horas=str(i[1][2]), tempo_s=segundos, status1 = 'POSITIVO')
 
-                    if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
-                        bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                        bd.update(status1='NULO')
-                return redirect('IAs:colaboradores')
-        else:
-            return redirect('IAs:homefrotas')
-
-    except:
+                if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
+                    bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
+                    bd.update(status1='NULO')
+            return redirect('IAs:colaboradores')
+    else:
         return redirect('IAs:homefrotas')
+
+    # except:
+    #     return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
