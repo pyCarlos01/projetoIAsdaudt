@@ -333,7 +333,7 @@ def download_horario_saida(request, data):
     return render(request, 'relatorios.html')
 
 def download_colaboradores(request, funcao, status, empresa):
-    try:
+    # try:
         if request.method == 'POST':
             if funcao == 'TODOS' and status == 'TODOS' and empresa == 'TODOS':
                 queryset = Colaboradores.objects.all()
@@ -364,9 +364,9 @@ def download_colaboradores(request, funcao, status, empresa):
                 response = HttpResponse(file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                 response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
             return response
-    except:
-        return redirect('IAs:escala')
-    return render(request, 'relatorios.html')
+    # except:
+    #     return redirect('IAs:escala')
+        return render(request, 'relatorios.html')
 
 def controle_func(request):
     folgas = Colaboradores.objects.filter(status='FOLGA', empresa='IPIRANGA').count()
