@@ -137,55 +137,61 @@ def escala(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Pegar dados das planilhas exportadas
-    caminho = 'media/remessas/'
-    arquivos = os.listdir(caminho)
-
     try:
-        for arq in arquivos:
-            df = pd.read_excel(caminho + arq)
 
-            # Escolher colunas que entrarão na base
-            planilha = df[['Remessa','Categoria','Placa','Distância total','Peso (KG)', 'Qtd. Entregas']]
+        # Pegar dados das planilhas exportadas
+        caminho = 'media/remessas/'
+        arquivos = os.listdir(caminho)
 
-            # Loop para pegar e adicionar linha por linha
-            for i in planilha.iterrows():
-                # Tratar remessa antes de salvar
-                t_remessa = str(i[1][0]).replace('AMPM.', '')
+        try:
+            for arq in arquivos:
+                df = pd.read_excel(caminho + arq)
 
-                if str(i[1][1]) == 'CONGELADO':
-                    t_categoria = 'CONG'
-                else:
-                    t_categoria = str(i[1][1])
+                # Escolher colunas que entrarão na base
+                planilha = df[['Remessa','Categoria','Placa','Distância total','Peso (KG)', 'Qtd. Entregas']]
 
-                # Evitar os valores nulos
-                if t_remessa == 'nan':
-                    pass
-                else:
-                    # Verificar se a remessa existe para não cadastrar novamente no database
-                    if Remessa.objects.filter(remessa = t_remessa).exists():
+                # Loop para pegar e adicionar linha por linha
+                for i in planilha.iterrows():
+                    # Tratar remessa antes de salvar
+                    t_remessa = str(i[1][0]).replace('AMPM.', '')
+
+                    if str(i[1][1]) == 'CONGELADO':
+                        t_categoria = 'CONG'
+                    else:
+                        t_categoria = str(i[1][1])
+
+                    # Evitar os valores nulos
+                    if t_remessa == 'nan':
                         pass
                     else:
-                        # Salvar no database
-                        remessa = Remessa(remessa = t_remessa, categoria = t_categoria, placa = i[1][2], distancia = i[1][3], peso = i[1][4], entregas = i[1][5])
-                        remessa.save()
+                        # Verificar se a remessa existe para não cadastrar novamente no database
+                        if Remessa.objects.filter(remessa = t_remessa).exists():
+                            pass
+                        else:
+                            # Salvar no database
+                            remessa = Remessa(remessa = t_remessa, categoria = t_categoria, placa = i[1][2], distancia = i[1][3], peso = i[1][4], entregas = i[1][5])
+                            remessa.save()
+        except:
+            os.remove(caminho + arq)
+
+        remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
     except:
-        os.remove(caminho + arq)
+        pass
 
-    remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
+    try:
+        # Tratar período ausente baseado no dia da escala
+        for i in periodos:
+            if i.periodo == None or i.periodo == '':
+                pass
+            else:
+                data = i.periodo
+                data_tratada = datetime.strptime(str(data), "%Y-%m-%d").date()
 
-    # Tratar período ausente baseado no dia da escala
-    for i in periodos:
-        if i.periodo == None or i.periodo == '':
-            pass
-        else:
-            data = i.periodo
-            data_tratada = datetime.strptime(str(data), "%Y-%m-%d").date()
-
-            if data_tratada < date.today():
-                novo_periodo = Colaboradores.objects.filter(nome=i.nome)
-                novo_periodo.update(status='DISPONÍVEL', periodo=None)
-
+                if data_tratada < date.today():
+                    novo_periodo = Colaboradores.objects.filter(nome=i.nome)
+                    novo_periodo.update(status='DISPONÍVEL', periodo=None)
+    except:
+        pass
 
     # Adicionar no banco de dados
     if request.method == 'POST':
