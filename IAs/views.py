@@ -455,7 +455,7 @@ def horas_extras(request, data, arq):
                 if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
                     bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
                     bd.update(status1='NULO')
-            return redirect('IAs:colaboradores')
+        # return redirect('IAs:colaboradores')
     else:
         return redirect('IAs:homefrotas')
 
