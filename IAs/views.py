@@ -70,17 +70,25 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-class Remessas(LoginRequiredMixin, CreateView):
+class Remessas(LoginRequiredMixin, TemplateView):
     template_name = 'remessa.html'
-    model = ArqRemessa
-    fields = '__all__'
+    model = Remessa
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+    @method_decorator(csrf_exempt, name='dispatch')
 
-    def get_success_url(self):
-        return reverse('IAs:escala')
+    def post(self, request, *args, **kwargs):
+
+        arq = request.POST.get('file')
+        if request.method == 'POST':
+            redirect('IAs:disponibilidade')
+    # fields = '__all__'
+    #
+    # def form_valid(self, form):
+    #     form.save()
+    #     return super().form_valid(form)
+    #
+    # def get_success_url(self):
+    #     return reverse('IAs:escala')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
