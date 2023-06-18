@@ -86,9 +86,11 @@ class Remessas(LoginRequiredMixin, TemplateView):
             # planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
 
             return JsonResponse({
-                'caminho': caminho,
-                'arq': arq
+                'caminho': caminho
             })
+        return JsonResponse({
+            'status': 200
+        })
 
 
 
