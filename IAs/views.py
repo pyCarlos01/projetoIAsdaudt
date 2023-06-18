@@ -79,8 +79,13 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         arq = request.POST.get('file')
+        caminho = '/Downloads/' + arq
         if request.method == 'POST':
-            return redirect('IAs:disponibilidade')
+
+            df = pd.read_excel(caminho)
+            planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
+
+
     # fields = '__all__'
     #
     # def form_valid(self, form):
