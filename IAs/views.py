@@ -134,46 +134,6 @@ def escala(request):
     page_obj = paginator.get_page(page_number)
 
     try:
-        # Pegar dados das planilhas exportadas
-        caminho = 'media/remessas/'
-        arquivos = os.listdir(caminho)
-    except:
-        pass
-
-    try:
-        for arq in arquivos:
-            df = pd.read_excel(caminho + arq)
-
-            # Escolher colunas que entrarão na base
-            planilha = df[['Remessa','Categoria','Placa','Distância total','Peso (KG)', 'Qtd. Entregas']]
-
-            # Loop para pegar e adicionar linha por linha
-            for i in planilha.iterrows():
-                # Tratar remessa antes de salvar
-                t_remessa = str(i[1][0]).replace('AMPM.', '')
-
-                if str(i[1][1]) == 'CONGELADO':
-                    t_categoria = 'CONG'
-                else:
-                    t_categoria = str(i[1][1])
-
-                # Evitar os valores nulos
-                if t_remessa == 'nan':
-                    pass
-                else:
-                    # Verificar se a remessa existe para não cadastrar novamente no database
-                    if Remessa.objects.filter(remessa = t_remessa).exists():
-                        pass
-                    else:
-                        # Salvar no database
-                        remessa = Remessa(remessa = t_remessa, categoria = t_categoria, placa = i[1][2], distancia = i[1][3], peso = i[1][4], entregas = i[1][5])
-                        remessa.save()
-    except:
-        os.remove(caminho + arq)
-
-    remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
-
-    try:
         # Tratar período ausente baseado no dia da escala
         for i in periodos:
             if i.periodo == None or i.periodo == '':
@@ -426,39 +386,39 @@ def horas_extras(request, data, arq):
 
     # caminho = r"C:\Users\{}\Downloads\{}".format(os.getlogin(), arq)
 
-    if 'HORAS' in str(arq):
-        df = pd.read_excel(arq, sheet_name=data)
-        df = df[['Unnamed: 3', 'Unnamed: 7', 'Unnamed: 8']]
-        print(df)
-        for i in df.iterrows():
-            # print(i[1][0], i[1][1], i[1][2])
-            if 'HORAS' in str(i[1][1]):
-                pass
-            else:
-                hora = str(i[1][2])[:2]
-                minuto = str(i[1][2])[3:5]
-                hora_n = str(i[1][1])[:2]
-                minuto_n = str(i[1][1])[3:5]
-
-                if 'na' in hora:
-                    if 'na' in hora_n:
-                        pass
-                    else:
-                        segundos = int(hora_n) * 3600 + int(minuto_n) * 60
-                        bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                        bd.update(horas=str(i[1][1]), tempo_s='-' + str(segundos), status1='NEGATIVO')
-                else:
-                    segundos = int(hora) * 3600 + int(minuto) * 60
-                    bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                    bd.update(horas=str(i[1][2]), tempo_s=segundos, status1 = 'POSITIVO')
-
-                if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
-                    bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-                    bd.update(status1='NULO')
-        # return redirect('IAs:colaboradores')
-    else:
-        return redirect('IAs:homefrotas')
-
-    # except:
+    # if 'HORAS' in str(arq):
+    #     df = pd.read_excel(arq, sheet_name=data)
+    #     df = df[['Unnamed: 3', 'Unnamed: 7', 'Unnamed: 8']]
+    #     print(df)
+    #     for i in df.iterrows():
+    #         # print(i[1][0], i[1][1], i[1][2])
+    #         if 'HORAS' in str(i[1][1]):
+    #             pass
+    #         else:
+    #             hora = str(i[1][2])[:2]
+    #             minuto = str(i[1][2])[3:5]
+    #             hora_n = str(i[1][1])[:2]
+    #             minuto_n = str(i[1][1])[3:5]
+    #
+    #             if 'na' in hora:
+    #                 if 'na' in hora_n:
+    #                     pass
+    #                 else:
+    #                     segundos = int(hora_n) * 3600 + int(minuto_n) * 60
+    #                     bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
+    #                     bd.update(horas=str(i[1][1]), tempo_s='-' + str(segundos), status1='NEGATIVO')
+    #             else:
+    #                 segundos = int(hora) * 3600 + int(minuto) * 60
+    #                 bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
+    #                 bd.update(horas=str(i[1][2]), tempo_s=segundos, status1 = 'POSITIVO')
+    #
+    #             if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
+    #                 bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
+    #                 bd.update(status1='NULO')
+    #     # return redirect('IAs:colaboradores')
+    # else:
     #     return redirect('IAs:homefrotas')
+    #
+    # # except:
+    # #     return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
