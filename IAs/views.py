@@ -4,7 +4,7 @@ from .forms import *
 from .models import *
 from datetime import date, datetime
 from django.views.generic import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -84,6 +84,10 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
             df = pd.read_excel(caminho)
             planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
+
+            response = JsonResponse(planilha)
+
+            return response
 
 
     # fields = '__all__'
