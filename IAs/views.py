@@ -82,11 +82,12 @@ class Remessas(LoginRequiredMixin, TemplateView):
         caminho = '/Downloads/' + arq
         if request.method == 'POST':
 
-            df = pd.read_excel(caminho)
-            planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
+            # df = pd.read_excel(caminho)
+            # planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
 
             return JsonResponse({
-                'Remessa': planilha[0]
+                'caminho': caminho,
+                'arq': arq
             })
 
 
