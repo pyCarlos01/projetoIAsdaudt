@@ -70,7 +70,7 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-class Remessas(LoginRequiredMixin, CreateView):
+class Remessas(LoginRequiredMixin, TemplateView):
     template_name = 'remessa.html'
 
 def nv_remessas(request):
