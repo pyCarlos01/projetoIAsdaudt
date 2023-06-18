@@ -79,11 +79,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
         if request.method == 'POST':
             df = pd.read_excel(r'\Downloads\Remessas.xlsx')
 
-            aux = []
-            for row in df.values:
-                aux.append(row[1])
-
-            return render(request, 'remessa.html',{'aux':aux})
+            return render(request, 'remessa.html',{'df':df})
 
 
 
