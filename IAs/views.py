@@ -133,6 +133,8 @@ def escala(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    remessas = Remessa.objects.filter(status = 'DISPONÍVEL')
+
     try:
         # Tratar período ausente baseado no dia da escala
         for i in periodos:
