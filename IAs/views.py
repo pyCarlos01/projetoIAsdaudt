@@ -73,21 +73,27 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 class Remessas(LoginRequiredMixin, TemplateView):
     template_name = 'remessa.html'
 
-def nv_remessas(request):
-    if request.method == 'POST':
-        return redirect("IAs:homefrotas")
+    @method_decorator(csrf_exempt, name='dispatch')
 
-    # @method_decorator(csrf_exempt, name='dispatch')
+    def post(self, request, *args, **kwargs):
+        arq = request.POST.get('file')
+        caminho = '/Downloads/' + arq
+        if request.method == 'POST':
+            return JsonResponse({
+                'status': 200
+            })
 
-    # def post(self, request, *args, **kwargs):
-    #     arq = request.POST.get('file')
-    #     caminho = '/Downloads/' + arq
-    #     try:
+
+
+
+    # fields = '__all__'
     #
-    #     except:
-    #         return JsonResponse({
-    #             'caminho': 'deu ruim'
-    #         })
+    # def form_valid(self, form):
+    #     form.save()
+    #     return super().form_valid(form)
+    #
+    # def get_success_url(self):
+    #     return reverse('IAs:escala')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()

@@ -16,9 +16,9 @@ Disponibilidade
                {% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Importar Remessas</legend>
-                    <input type="file" name="pasta" id="pasta" class="form-control rounded-md" directory>
+                    <input type="file" name="file" id="file" class="form-control rounded-md" directory>
                 </fieldset>
-                <a href="{% url 'IAs:remessa1' %}" type="submit">Imp</a>
+                <button class="btn btn-primary">Importar</button>
             </form>
         </div>
     </header>
