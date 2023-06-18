@@ -80,7 +80,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
         arq = request.POST.get('file')
         if request.method == 'POST':
-            redirect('IAs:disponibilidade')
+            return redirect('IAs:disponibilidade')
     # fields = '__all__'
     #
     # def form_valid(self, form):
