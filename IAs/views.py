@@ -79,7 +79,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
         arq = request.POST.get('file')
         caminho = '/Downloads/' + arq
         if request.method == 'POST':
-            pass
+            return render(request, 'remessa.html',{'caminho':caminho, 'arq':arq})
 
 
 
