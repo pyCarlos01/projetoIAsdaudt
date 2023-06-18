@@ -77,14 +77,17 @@ class Remessas(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt, name='dispatch')
 
     def post(self, request, *args, **kwargs):
-
         arq = request.POST.get('file')
         caminho = '/Downloads/' + arq
-        if request.method == 'POST':
+        try:
+            if request.method == 'POST':
+                return JsonResponse({
+                    'status': 200
+                })
+        except:
             return JsonResponse({
-                'status': 200
+                'caminho': caminho
             })
-
 
 
 
