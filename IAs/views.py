@@ -86,7 +86,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
                 })
         except:
             return JsonResponse({
-                'caminho': caminho
+                'caminho': 'deu ruim'
             })
 
 
