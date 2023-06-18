@@ -75,9 +75,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
 def nv_remessas(request):
     if request.method == 'POST':
-        return JsonResponse({
-            'status': 200
-        })
+        return redirect("IAs:homefrotas")
 
     # @method_decorator(csrf_exempt, name='dispatch')
 
