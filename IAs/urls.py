@@ -9,7 +9,6 @@ urlpatterns = [
     path('criarconta/', Criarconta.as_view(), name = 'criarconta'),
     path('homefrotas/', Homefrotas.as_view(), name = 'homefrotas'),
     path('homefrotas/escala/remessa/', Remessas.as_view(), name='remessa'),
-    path('homefrotas/escala/remessa/d', nv_remessas, name='remessa1'),
     path('homefrotas/disponibilidade/<int:pk>', Detalhesfrotas.as_view(), name = 'detalhesfrotas'),
     path('login/', auth_view.LoginView.as_view(template_name = 'login.html'), name = 'login'),
     path('logout', auth_view.LogoutView.as_view(template_name = 'logout.html'), name = 'logout'),

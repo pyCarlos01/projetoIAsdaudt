@@ -79,10 +79,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
         arq = request.POST.get('file')
         caminho = '/Downloads/' + arq
         if request.method == 'POST':
-            return JsonResponse({
-                'status': 200
-            })
-
+            pass
 
 
 
