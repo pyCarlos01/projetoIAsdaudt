@@ -76,10 +76,14 @@ class Remessas(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt, name='dispatch')
 
     def post(self, request, *args, **kwargs):
-        arq = request.POST.get('file')
-        caminho = r'/Downloads/' + arq
         if request.method == 'POST':
-            return render(request, 'remessa.html',{'caminho':caminho, 'arq':arq})
+            df = pd.read_excel(r'\Downloads\Remessas.xlsx')
+
+            aux = []
+            for row in df.values:
+                aux.append(row[1])
+
+            return render(request, 'remessa.html',{'aux':aux})
 
 
 
