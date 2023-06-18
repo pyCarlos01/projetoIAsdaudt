@@ -85,9 +85,11 @@ class Remessas(LoginRequiredMixin, TemplateView):
             df = pd.read_excel(caminho)
             planilha = df[['Remessa', 'Categoria', 'Placa', 'Distância total', 'Peso (KG)', 'Qtd. Entregas']]
 
-            response = JsonResponse(planilha)
+            return JsonResponse({
+                'Remessa': planilha[0]
+            })
 
-            return response
+
 
 
     # fields = '__all__'
