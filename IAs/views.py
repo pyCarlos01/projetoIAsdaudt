@@ -3,6 +3,7 @@ import pandas as pd
 from .forms import *
 from .models import *
 from datetime import date, datetime
+from django.contrib import messages
 from django.views.generic import *
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
@@ -299,7 +300,9 @@ def download_horario_saida(request, data):
                 response['Content-Disposition'] = 'attachment; filename="{}"'.format(output_filename)
             return response
     except:
-        return redirect('IAs:escala')
+        # return redirect('IAs:escala')
+
+        messages.warning(request, "Your account is about to expire.")
     return render(request, 'relatorios.html')
 
 def download_colaboradores(request, funcao, status, empresa):
