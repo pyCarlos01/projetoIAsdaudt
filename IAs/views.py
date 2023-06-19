@@ -5,7 +5,7 @@ from .models import *
 from datetime import date, datetime
 from django.contrib import messages
 from django.views.generic import *
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -302,7 +302,7 @@ def download_horario_saida(request, data):
     except:
         # return redirect('IAs:escala')
 
-        messages.warning(request, "Your account is about to expire.")
+        messages.warning(request, "Data selecionada está inválida")
     return render(request, 'relatorios.html')
 
 def download_colaboradores(request, funcao, status, empresa):
@@ -437,3 +437,18 @@ def horas_extras(request, data, arq):
     # # except:
     # #     return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
+
+def upload_file(request):
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES["file"])
+            return HttpResponseRedirect("/success/url/")
+    else:
+        form = UploadFileForm()
+    return render(request, "upload.html", {"form": form})
+
+def handle_uploaded_file(f):
+    with open("some/file/name.txt", "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
