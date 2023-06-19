@@ -79,9 +79,9 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             # df = pd.read_excel(r"C:\Users\carlo\Downloads\26.05.23.xlsx")
-            caminho = os.getlogin()
+            # caminho = os.getlogin()
 
-            return render(request, 'remessa.html',{'caminho':caminho})
+            return render(request, 'remessa.html')
 
 
 
