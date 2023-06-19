@@ -302,7 +302,7 @@ def download_horario_saida(request, data):
     except:
         # return redirect('IAs:escala')
 
-        messages.warning(request, "Your account is about to expire.")
+        return messages.warning(request, "Your account is about to expire.")
     return render(request, 'relatorios.html')
 
 def download_colaboradores(request, funcao, status, empresa):
