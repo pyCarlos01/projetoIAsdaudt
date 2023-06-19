@@ -78,10 +78,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
-            # df = pd.read_excel(r"C:\Users\carlo\Downloads\26.05.23.xlsx")
-            # caminho = os.getlogin()
-
-            return render(request, 'remessa.html')
+            return pandas(request)
 
 
 
@@ -93,6 +90,10 @@ class Remessas(LoginRequiredMixin, TemplateView):
     #
     # def get_success_url(self):
     #     return reverse('IAs:escala')
+
+def pandas(request):
+    df = pd.read_excel(r"C:\Users\carlo\Downloads\26.05.23.xlsx")
+    return render(request, 'remessa.html',{'df':df})
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
