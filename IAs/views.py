@@ -93,7 +93,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
 def pandas(request):
     df = pd.read_excel(r"C:\Users\carlo\Downloads\26.05.23.xlsx")
-    return render(request, 'remessa.html',{'df':df})
+
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
