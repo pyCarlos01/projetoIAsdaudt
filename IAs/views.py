@@ -71,16 +71,16 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-class Remessas(LoginRequiredMixin, TemplateView):
-    template_name = 'remessa.html'
-
-    @method_decorator(csrf_exempt, name='dispatch')
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            df = pd.read_excel(r'\Downloads\Remessas.xlsx')
-
-            return render(request, 'remessa.html',{'df':df})
+# class Remessas(LoginRequiredMixin, TemplateView):
+#     template_name = 'remessa.html'
+#
+#     @method_decorator(csrf_exempt, name='dispatch')
+#
+#     def post(self, request, *args, **kwargs):
+#         if request.method == 'POST':
+#             df = pd.read_excel(r'\Downloads\Remessas.xlsx')
+#
+#             return render(request, 'remessa.html',{'df':df})
 
 
 
@@ -446,7 +446,7 @@ def upload_file(request):
             return HttpResponseRedirect("/success/url/")
     else:
         form = UploadFileForm()
-    return render(request, "upload.html", {"form": form})
+    return render(request, "remessas.html", {"form": form})
 
 def handle_uploaded_file(f):
     with open("some/file/name.txt", "wb+") as destination:
