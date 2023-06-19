@@ -5,7 +5,7 @@ from .models import *
 from datetime import date, datetime
 from django.contrib import messages
 from django.views.generic import *
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -71,16 +71,16 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-# class Remessas(LoginRequiredMixin, TemplateView):
-#     template_name = 'remessa.html'
-#
-#     @method_decorator(csrf_exempt, name='dispatch')
-#
-#     def post(self, request, *args, **kwargs):
-#         if request.method == 'POST':
-#             df = pd.read_excel(r'\Downloads\Remessas.xlsx')
-#
-#             return render(request, 'remessa.html',{'df':df})
+class Remessas(LoginRequiredMixin, TemplateView):
+    template_name = 'remessa.html'
+
+    @method_decorator(csrf_exempt, name='dispatch')
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            df = pd.read_excel(r'\Downloads\Remessas.xlsx')
+
+            return render(request, 'remessa.html',{'df':df})
 
 
 
@@ -302,7 +302,7 @@ def download_horario_saida(request, data):
     except:
         # return redirect('IAs:escala')
 
-        messages.warning(request, "Data selecionada está inválida")
+        messages.warning(request, "Data selecid")
     return render(request, 'relatorios.html')
 
 def download_colaboradores(request, funcao, status, empresa):
@@ -437,18 +437,3 @@ def horas_extras(request, data, arq):
     # # except:
     # #     return redirect('IAs:homefrotas')
     return render(request, 'colaboradores.html')
-
-def upload_file(request):
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES["file"])
-            return HttpResponseRedirect("/success/url/")
-    else:
-        form = UploadFileForm()
-    return render(request, "remessas.html", {"form": form})
-
-def handle_uploaded_file(f):
-    with open("some/file/name.txt", "wb+") as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
