@@ -79,7 +79,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         caminho = request.FILES.get('file')
-        caminho = f'\Downloads\{str(caminho)}'
+        caminho = r"C:\Users\carlo\Downloads\26.05.23.xlsx"
         aux = []
         if request.method == 'POST':
             df = pd.read_excel(caminho)
