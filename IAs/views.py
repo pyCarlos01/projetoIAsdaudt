@@ -82,12 +82,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
         caminho = r"C:\Users\carlo\Downloads\26.05.23.xlsx"
         aux = []
         if request.method == 'POST':
-            df = pd.read_excel(caminho)
-
-            for item in df.values:
-                aux.append(item[0])
-
-            return render(request, 'remessa.html', {'caminho':caminho, 'df':aux})
+            return render(request, 'remessa.html', {'caminho':caminho})
 
 
 
