@@ -79,13 +79,13 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         # caminho = request.FILES.get('file')
-        caminho = r"\media\remessas\CDSP - 03.04.xlsx"
+        caminho = r"\media\remessas"
 
 
         if request.method == 'POST':
-            df = pd.read_excel(caminho)
-            return redirect('IAs:disponibilidade')
-        return render(request, 'remessa.html')
+            l = os.listdir(caminho)
+            # return redirect('IAs:disponibilidade')
+        return render(request, 'remessa.html',{'l':l})
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
