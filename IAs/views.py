@@ -77,8 +77,12 @@ class Remessas(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt, name='dispatch')
 
     def post(self, request, *args, **kwargs):
+
+        caminho = request.FILES.get('file')
+
         if request.method == 'POST':
-            return pandas(request)
+            return render(request, 'remessa.html', {'caminho':caminho})
+
 
 
 
@@ -90,10 +94,6 @@ class Remessas(LoginRequiredMixin, TemplateView):
     #
     # def get_success_url(self):
     #     return reverse('IAs:escala')
-
-def pandas(request):
-    df = pd.read_excel(r"C:\Users\carlo\Downloads\26.05.23.xlsx")
-
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
