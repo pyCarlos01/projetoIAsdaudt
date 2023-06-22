@@ -19,7 +19,9 @@ Disponibilidade
                     <input type="file" name="file" id="file" class="form-control rounded-md">
                 </fieldset>
                 <button class="btn btn-primary">Importar</button>
-                <p>{{l}}</p>
+                {%for i in l%}
+                <p>{{i}}</p>
+                {%endfor%}
             </form>
         </div>
     </header>

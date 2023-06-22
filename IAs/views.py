@@ -79,12 +79,11 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         # caminho = request.FILES.get('file')
-        caminho = r"\media\remessas"
+        caminho = r"\remessas"
 
 
         if request.method == 'POST':
             l = os.listdir(caminho)
-            # return redirect('IAs:disponibilidade')
         return render(request, 'remessa.html',{'l':l})
 
 def disponibilidade(request):
