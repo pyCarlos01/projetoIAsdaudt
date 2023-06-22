@@ -78,50 +78,13 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        caminho = request.FILES.get('file')
-        # caminho = r"C:\Users\carlo\Downloads\26.05.23.xlsx"
+        # caminho = request.FILES.get('file')
+        caminho = r"\remessas\CDSP - 03.04.xlsx"
 
 
         if request.method == 'POST':
-            exportar_tab(f"\Downloads\{caminho}")
+            df = pd.read_excel(caminho)
         return render(request, 'remessa.html')
-
-
-def export(model, filename, queryset, columns):
-    import xlwt
-    response = HttpResponse(content_type='application/ms-excel')
-
-    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
-
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet(model)
-
-    row_num = 0
-
-    font_style = xlwt.XFStyle()
-    font_style.font.bold = True
-
-    for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num], font_style)
-
-    default_style = xlwt.XFStyle()
-    rows = queryset
-
-    for row, rowdata in enumerate(rows):
-        row_num += 1
-        for col, val in enumerate(rowdata):
-            ws.write(row_num, col, val, default_style)
-    wb.save(response)
-
-    return response
-
-def exportar_tab(filename):
-    model = Frota
-    filename = filename
-    queryset = Frota.objects.all().values_list('numero','placa')
-    columns = ('Frota', 'Placa')
-    response = export(model, filename, queryset, columns)
-    return response
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
