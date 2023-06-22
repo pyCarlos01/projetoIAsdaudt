@@ -79,7 +79,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
 
         # caminho = request.FILES.get('file')
-        caminho = r"\remessas\CDSP - 03.04.xlsx"
+        caminho = r"\media\remessas\CDSP - 03.04.xlsx"
 
 
         if request.method == 'POST':
