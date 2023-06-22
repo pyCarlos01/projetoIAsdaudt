@@ -84,6 +84,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
         if request.method == 'POST':
             df = pd.read_excel(caminho)
+            return redirect('IAs:disponibilidade')
         return render(request, 'remessa.html')
 
 def disponibilidade(request):
