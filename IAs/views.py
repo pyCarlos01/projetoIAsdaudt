@@ -76,12 +76,12 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
     @method_decorator(csrf_exempt, name='dispatch')
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
         caminho = request.FILES.get('file')
         caminho = r"C:\Users\carlo\Downloads\26.05.23.xlsx"
         aux = []
-        if request.method == 'GET':
+        if request.method == 'POST':
             df = pd.read_excel(caminho)
 
             for item in df.values:
