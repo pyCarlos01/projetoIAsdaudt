@@ -81,7 +81,8 @@ class Remessas(LoginRequiredMixin, TemplateView):
         caminho = request.FILES.get('file')
 
         if request.method == 'POST':
-            return render(request, 'remessa.html', {'caminho':caminho})
+            df = pd.read_excel(f'/Downloads/{caminho}')
+            return render(request, 'remessa.html', {'caminho':caminho, 'df':df})
 
 
 

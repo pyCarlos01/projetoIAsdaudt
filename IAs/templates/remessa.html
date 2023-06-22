@@ -20,6 +20,9 @@ Disponibilidade
                 </fieldset>
                 <button class="btn btn-primary">Importar</button>
                 <p>{{caminho}}</p>
+                {% for d in df %}
+                <p>{{d}}</p>
+                {% endfor %}
             </form>
         </div>
     </header>
