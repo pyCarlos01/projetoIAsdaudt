@@ -80,9 +80,12 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
         caminho = request.FILES.get('file')
         caminho = r"C:\Users\carlo\Downloads\26.05.23.xlsx"
-        aux = []
+
+        data = {'nome': 'carlos', 'sexo': 'masculino'}
+
         if request.method == 'POST':
-            return render(request, 'remessa.html', {'caminho':caminho})
+            df = pd.DataFrame(data)
+            return render(request, 'remessa.html', {'caminho':caminho, 'df':df})
 
 
 
