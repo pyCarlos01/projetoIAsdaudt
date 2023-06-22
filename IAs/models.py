@@ -100,7 +100,7 @@ class Escala(models.Model):
         return str(self.remessa)
 
 class ArqRemessa(models.Model):
-    arquivo = models.FileField(upload_to='remessas')
+    arquivo = models.FileField(upload_to='media')
 
     def __str__(self):
         return str(self.arquivo)
