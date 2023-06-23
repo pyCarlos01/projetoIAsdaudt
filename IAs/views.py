@@ -106,7 +106,7 @@ def import_remessa(request):
                 data[7]
             )
             value.save()
-        return render(request, 'remessa.html')
+    return render(request, 'remessa.html')
 
 
 
