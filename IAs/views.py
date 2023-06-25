@@ -85,6 +85,7 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 
 def create_bd(file_path):
     df = pd.read_excel(file_path)
+    print(df)
 
 
 def export(request):
