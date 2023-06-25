@@ -72,17 +72,27 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-class Remessas(LoginRequiredMixin, TemplateView):
-    template_name = 'remessa.html'
+# class Remessas(LoginRequiredMixin, TemplateView):
+#     template_name = 'remessa.html'
+#
+#     @method_decorator(csrf_exempt, name='dispatch')
+#
+#     def post(self, request, *args, **kwargs):
+#         caminho = request.FILES['file']
+#         if request.method == 'POST':
+#             pass
+#         return render(request,'remessa.html')
 
-    @method_decorator(csrf_exempt, name='dispatch')
+def create_bd(file_path):
+    df = pd.read_excel(file_path)
 
-    def post(self, request, *args, **kwargs):
-        caminho = request.FILES['file']
-        if request.method == 'POST':
-            df = pd.read_excel(r"\remessas\CDSP - 03.04.xlsx")
-            return df
-        return render(request,'remessa.html')
+
+def export(request):
+    if request.method == 'POST':
+        file = request.FILES['file']
+        obj = ArqRemessa.objects.create(arquivo = file)
+        create_bd(obj.file)
+    return render(request, 'remessa.html')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
