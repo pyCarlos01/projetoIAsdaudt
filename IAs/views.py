@@ -80,7 +80,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         caminho = request.FILES['file']
         if request.method == 'POST':
-           return redirect('IAs:escala')
+           df = pd.read_excel(r"\remessas\CDSP - 03.04.xlsx")
         return render(request,'remessa.html')
 
 def disponibilidade(request):
