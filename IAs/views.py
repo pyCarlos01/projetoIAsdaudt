@@ -85,14 +85,14 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 
 def create_bd(file_path):
     df = pd.read_excel(file_path)
-    print(df)
+    print(file_path)
 
 
 def export(request):
     if request.method == 'POST':
         file = request.FILES['file']
         obj = ArqRemessa.objects.create(arquivo = file)
-        create_bd(obj.file)
+        create_bd(obj.arquivo)
     return render(request, 'remessa.html')
 
 def disponibilidade(request):
