@@ -5,7 +5,6 @@ from .models import *
 from datetime import date, datetime
 from django.contrib import messages
 from django.views.generic import *
-from .resources import ImportResources
 from tablib import Dataset
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
@@ -81,32 +80,32 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         caminho = request.FILES.get('file')
         if request.method == 'POST':
-            return import_remessa(request)
+           pass
 
-def import_remessa(request):
-    if request.method == 'POST':
-        import_rem = ImportResources()
-        dataset = Dataset()
-        new_import_rem = request.FILES['file']
-
-        if not new_import_rem.name.endwith('xlsx'):
-            messages.info(request, 'deu ruim')
-            return render(request, 'remessa.html')
-
-        imported_data = dataset.load(new_import_rem.read(),format='xlsx')
-        for data in imported_data:
-            value = Remessa(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6],
-                data[7]
-            )
-            value.save()
-    return render(request, 'remessa.html')
+# def import_remessa(request):
+#     if request.method == 'POST':
+#         import_rem = ImportResources()
+#         dataset = Dataset()
+#         new_import_rem = request.FILES['file']
+#
+#         if not new_import_rem.name.endwith('xlsx'):
+#             messages.info(request, 'deu ruim')
+#             return render(request, 'remessa.html')
+#
+#         imported_data = dataset.load(new_import_rem.read(),format='xlsx')
+#         for data in imported_data:
+#             value = Remessa(
+#                 data[0],
+#                 data[1],
+#                 data[2],
+#                 data[3],
+#                 data[4],
+#                 data[5],
+#                 data[6],
+#                 data[7]
+#             )
+#             value.save()
+#     return render(request, 'remessa.html')
 
 
 
