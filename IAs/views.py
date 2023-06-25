@@ -78,36 +78,10 @@ class Remessas(LoginRequiredMixin, TemplateView):
     @method_decorator(csrf_exempt, name='dispatch')
 
     def post(self, request, *args, **kwargs):
-        caminho = request.FILES.get('file')
+        caminho = request.FILES['file']
         if request.method == 'POST':
-           pass
-
-# def import_remessa(request):
-#     if request.method == 'POST':
-#         import_rem = ImportResources()
-#         dataset = Dataset()
-#         new_import_rem = request.FILES['file']
-#
-#         if not new_import_rem.name.endwith('xlsx'):
-#             messages.info(request, 'deu ruim')
-#             return render(request, 'remessa.html')
-#
-#         imported_data = dataset.load(new_import_rem.read(),format='xlsx')
-#         for data in imported_data:
-#             value = Remessa(
-#                 data[0],
-#                 data[1],
-#                 data[2],
-#                 data[3],
-#                 data[4],
-#                 data[5],
-#                 data[6],
-#                 data[7]
-#             )
-#             value.save()
-#     return render(request, 'remessa.html')
-
-
+           return redirect('IAs:escala')
+        return render(request,'remessa.html')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
