@@ -16,11 +16,11 @@ Disponibilidade
                {% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Importar Remessas</legend>
-                   <input type="file" name="csv_file" id="csv_file">
+                   <input type="file" name="filename">
                     {{ form|crispy }}
                 </fieldset>
                 <button class="bg-blue-600 py-1 px-3 text-white w-full md:text-lg rounded-md" type="submit">Importar</button>
-                <p>{{caminho}}</p>
+
             </form>
         </div>
     </header>
