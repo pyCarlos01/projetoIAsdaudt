@@ -73,16 +73,16 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-class Remessas(LoginRequiredMixin, TemplateView):
+class Remessas(TemplateView):
     template_name = 'remessa.html'
 
-    @method_decorator(csrf_exempt, name='dispatch')
-
-    def post(self, request, *args, **kwargs):
-        caminho = request.FILES['file']
-        if request.method == 'POST':
-            return simple_upload(request)
-        return render(request,'remessa.html')
+    # @method_decorator(csrf_exempt, name='dispatch')
+    #
+    # def post(self, request, *args, **kwargs):
+    #     caminho = request.FILES['file']
+    #     if request.method == 'POST':
+    #         return simple_upload(request)
+    #     return render(request,'remessa.html')
 
 def simple_upload(request):
     if request.method == 'POST':
