@@ -96,7 +96,7 @@ def simple_upload(request):
         import_data = dataset.load(new_remessa.read(), format='xlsx')
         for data in import_data:
             value = Remessa(
-                str(data[0]),
+                str(data[0]).replace('AMPM.',''),
                 str(data[1]),
                 str(data[2]),
                 str(data[3]),
