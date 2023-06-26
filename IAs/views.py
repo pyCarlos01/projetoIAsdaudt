@@ -95,7 +95,7 @@ def simple_upload(request):
             return redirect('IAs:homefrotas')
         import_data = dataset.load(new_remessa.read(), format='xlsx')
         for data in import_data:
-            value = Remessas(
+            value = Remessa(
                 remessa = data[0],
                 placa = data[1],
                 peso = data[2],
