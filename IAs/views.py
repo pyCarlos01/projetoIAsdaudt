@@ -101,7 +101,7 @@ def simple_upload(request):
                 str(data[6]),
                 str(data[2]),
                 str(data[7]),
-                str(data[8]),
+                str(data[8])
                 )
             value.save()
     return render(request, 'remessa.html')
