@@ -89,7 +89,7 @@ from .services import csv_to_list_in_memory, save_data
 
 @require_http_methods(['POST'])
 def import_csv(request):
-    csv_file = request.FILES.get('file')
+    csv_file = request.FILES.get('csv_file')
     data = csv_to_list_in_memory(csv_file)
     save_data(data)
     return redirect('product:product_list')
