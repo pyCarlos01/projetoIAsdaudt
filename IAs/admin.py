@@ -9,4 +9,3 @@ admin.site.register(Colaboradores)
 admin.site.register(Escala)
 admin.site.register(Remessa)
 # Register your models here.
-

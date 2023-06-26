@@ -83,17 +83,16 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 #             pass
 #         return render(request,'remessa.html')
 
-def create_bd(file_path):
-    df = pd.read_excel(file_path)
-    print(file_path)
+from django.views.decorators.http import require_http_methods
+from .services import csv_to_list_in_memory, save_data
 
 
-def export(request):
-    if request.method == 'POST':
-        file = request.FILES['file']
-        obj = ArqRemessa.objects.create(arquivo = file)
-        create_bd(obj.arquivo)
-    return render(request, 'remessa.html')
+@require_http_methods(['POST'])
+def import_csv(request):
+    csv_file = request.FILES.get('file')
+    data = csv_to_list_in_memory(csv_file)
+    save_data(data)
+    return redirect('product:product_list')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
