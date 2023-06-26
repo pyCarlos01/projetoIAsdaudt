@@ -96,13 +96,13 @@ def simple_upload(request):
         import_data = dataset.load(new_remessa.read(), format='xlsx')
         for data in import_data:
             value = Remessas(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6]
+                remessa = data[0],
+                placa = data[1],
+                peso = data[2],
+                categoria = data[3],
+                entregas = data[4],
+                distancia = data[5],
+                status = data[6]
                 )
             value.save()
     return render(request, 'remessa.html')
