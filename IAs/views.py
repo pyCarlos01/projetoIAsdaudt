@@ -73,43 +73,29 @@ class Relatorios(LoginRequiredMixin, TemplateView):
                 return download_disponibilidade(request)
         return redirect('IAs:homefrotas')
 
-# class Remessas(LoginRequiredMixin, TemplateView):
-#     template_name = 'remessa.html'
-#
-#     @method_decorator(csrf_exempt, name='dispatch')
-#
-#     def post(self, request, *args, **kwargs):
-#         caminho = request.FILES['file']
-#         if request.method == 'POST':
-#             pass
-#         return render(request,'remessa.html')
+class Remessas(LoginRequiredMixin, TemplateView):
+    template_name = 'remessa.html'
 
-from django.views.decorators.http import require_http_methods
-from .services import csv_to_list_in_memory, save_data
+    @method_decorator(csrf_exempt, name='dispatch')
 
+    def post(self, request, *args, **kwargs):
+        caminho = request.FILES['file']
+        if request.method == 'POST':
+            import openpyxl
 
-# product/views.py
-@require_http_methods(['POST'])
-def import_view(request):
-    filename = request.FILES.get('filename')
+            wb = openpyxl.load_workbook(r"C:\Users\carlo\Downloads\26.05.23.xlsx", data_only=True)
 
-    if filename.name.endswith('.csv'):
-        data = csv_to_list_in_memory(filename)
-    else:
-        wb = openpyxl.load_workbook(filename, data_only=True)
-        ws = wb.active
+            ws = wb.active
 
-        max_row = ws.max_row
-        max_col = ws.max_column
+            max_row = ws.max_row
+            max_col = ws.max_column
 
-        data = []
+            for row in ws.iter_rows(max_row=max_row, max_col=max_col):
+                # print(row[0].value, row[1].value)
+                a = Remessa(remessa = row[0])
+                a.save()
 
-        for row in ws.iter_rows(min_row=2, max_row=max_row, max_col=max_col):
-            _dict = dict(title=row[0].value, price=row[1].value)
-            data.append(_dict)
-
-    save_data(data)
-    return redirect('product:product_list')
+        return render(request,'remessa.html')
 
 def disponibilidade(request):
     veiculos = Frota.objects.all()
