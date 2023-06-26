@@ -106,7 +106,7 @@ def simple_upload(request):
                 data[6]
                 )
             value.save()
-        return render(request, 'remessa.html')
+    return render(request, 'remessa.html')
 def disponibilidade(request):
     veiculos = Frota.objects.all()
     escalas = Escala.objects.filter(status='EM ENTREGA').all()
