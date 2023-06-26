@@ -76,14 +76,6 @@ class Relatorios(LoginRequiredMixin, TemplateView):
 class Remessas(TemplateView):
     template_name = 'remessa.html'
 
-    # @method_decorator(csrf_exempt, name='dispatch')
-    #
-    # def post(self, request, *args, **kwargs):
-    #     caminho = request.FILES['file']
-    #     if request.method == 'POST':
-    #         return simple_upload(request)
-    #     return render(request,'remessa.html')
-
 def simple_upload(request):
     if request.method == 'POST':
         remessa_resources = RemessaResources()
@@ -94,17 +86,19 @@ def simple_upload(request):
             messages.info(request,'wrong format')
             return redirect('IAs:homefrotas')
         import_data = dataset.load(new_remessa.read(), format='xlsx')
+        value = []
         for data in import_data:
-            value = Remessa(
-                str(data[1]).replace('AMPM.',''),
-                str(data[5]),
-                str(data[6]),
-                str(data[2]),
-                str(data[7]),
-                str(data[8])
-                )
-            value.save()
-    return render(request, 'remessa.html')
+            value.append(([data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8]]))
+            # value = Remessa(
+            #     str(data[1]).replace('AMPM.',''),
+            #     str(data[5]),
+            #     str(data[6]),
+            #     str(data[2]),
+            #     str(data[7]),
+            #     str(data[8])
+            #     )
+            # value.save()
+    return render(request, 'remessa.html', {'data':value})
 def disponibilidade(request):
     veiculos = Frota.objects.all()
     escalas = Escala.objects.filter(status='EM ENTREGA').all()

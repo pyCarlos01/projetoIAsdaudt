@@ -15,7 +15,12 @@ Disponibilidade
             {% csrf_token %}
             <input type="file" name="myfile">
             <button type="submit">Upload</button>
-          </form>
+          <ul>
+              {%for i in value%}
+                <li>{{i}}</li>
+              {%endfor%}
+          </ul>
+         </form>
         </div>
     </header>
 {% endblock %}
