@@ -3,7 +3,7 @@ import csv
 import io
 from .models import *
 
-wb = openpyxl.load_workbook(r"\Downloads\26.05.23.xlsx", data_only=True)
+wb = openpyxl.load_workbook(r"/Downloads/26.05.23.xlsx", data_only=True)
 ws = wb.active
 
 max_row = ws.max_row
