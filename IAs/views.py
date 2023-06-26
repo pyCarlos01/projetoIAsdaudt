@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from .forms import *
 from .models import *
+import openpyxl
 from datetime import date, datetime
 from django.contrib import messages
 from django.views.generic import *
@@ -87,10 +88,26 @@ from django.views.decorators.http import require_http_methods
 from .services import csv_to_list_in_memory, save_data
 
 
+# product/views.py
 @require_http_methods(['POST'])
-def import_csv(request):
-    csv_file = request.FILES.get('csv_file')
-    data = csv_to_list_in_memory(csv_file)
+def import_view(request):
+    filename = request.FILES.get('filename')
+
+    if filename.name.endswith('.csv'):
+        data = csv_to_list_in_memory(filename)
+    else:
+        wb = openpyxl.load_workbook(filename, data_only=True)
+        ws = wb.active
+
+        max_row = ws.max_row
+        max_col = ws.max_column
+
+        data = []
+
+        for row in ws.iter_rows(min_row=2, max_row=max_row, max_col=max_col):
+            _dict = dict(title=row[0].value, price=row[1].value)
+            data.append(_dict)
+
     save_data(data)
     return redirect('product:product_list')
 

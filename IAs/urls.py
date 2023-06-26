@@ -17,6 +17,6 @@ urlpatterns = [
     path('homefrotas/escala/download/', download_escala, name='downloadescala'),
     path('homefrotas/relatorios/download/', Relatorios.as_view(), name='relatorios'),
     path('homefrotas/colaboradores/', controle_func, name='colaboradores'),
-    path('homefrotas/escala/remessa/', import_csv, name='remessa'),
-
+    # path('homefrotas/escala/remessa/', import_csv, name='remessa'),
+    path('import/', import_view, name='import_view'),
 ]

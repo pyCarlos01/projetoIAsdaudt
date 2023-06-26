@@ -1,17 +1,18 @@
+import openpyxl
 import csv
 import io
 from .models import *
 
-def csv_to_list_in_memory(filename: str) -> list:
-    '''
-    Lê um csv InMemoryUploadedFile e retorna um OrderedDict.
-    '''
-    file = filename.read().decode('utf-8')
-    reader = csv.DictReader(io.StringIO(file))
-    # Gerando uma list comprehension
-    data = [line for line in reader]
-    return data
+wb = openpyxl.load_workbook(r"\Downloads\26.05.23.xlsx", data_only=True)
+ws = wb.active
 
+max_row = ws.max_row
+max_col = ws.max_column
+
+for row in ws.iter_rows(max_row=max_row, max_col=max_col):
+    print(row[0].value, row[1].value)
+
+Remessa.objects.all().delete()
 
 def save_data(data):
     '''
@@ -20,11 +21,17 @@ def save_data(data):
     aux = []
     for item in data:
         title = item.get('title')
-        price = item.get('price')
         obj = Remessa(
             title=title,
-            price=price,
         )
         aux.append(obj)
 
     Remessa.objects.bulk_create(aux)
+
+data = []
+
+for row in ws.iter_rows(min_row=2, max_row=max_row, max_col=max_col):
+    _dict = dict(title=row[0].value)
+    data.append(_dict)
+
+save_data(data)
