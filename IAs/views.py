@@ -96,13 +96,13 @@ def simple_upload(request):
         import_data = dataset.load(new_remessa.read(), format='xlsx')
         for data in import_data:
             value = Remessa(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6]
+                str(data[0]),
+                str(data[1]),
+                str(data[2]),
+                str(data[3]),
+                str(data[4]),
+                str(data[5]),
+                str(data[6])
                 )
             value.save()
     return render(request, 'remessa.html')
