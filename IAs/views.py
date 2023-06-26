@@ -92,7 +92,7 @@ class Remessas(LoginRequiredMixin, TemplateView):
 
             for row in ws.iter_rows(max_row=max_row, max_col=max_col):
                 # print(row[0].value, row[1].value)
-                a = Remessa(remessa = row[0])
+                a = Remessa(remessa = row[0].value)
                 a.save()
 
         return render(request,'remessa.html')
