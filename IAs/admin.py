@@ -9,3 +9,7 @@ admin.site.register(Colaboradores)
 admin.site.register(Escala)
 admin.site.register(Remessa)
 # Register your models here.
+
+@admin.register(Remessa)
+class RemessaAdmin(ImportExportModelAdmin):
+    list_display = ('remessa', 'placa', 'peso', 'categoria', 'entregas', 'distancia', 'status')

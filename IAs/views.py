@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from .forms import *
 from .models import *
-import openpyxl
+from .resources import RemessaResources
 from datetime import date, datetime
 from django.contrib import messages
 from django.views.generic import *
@@ -81,22 +81,32 @@ class Remessas(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         caminho = request.FILES['file']
         if request.method == 'POST':
-            import openpyxl
-
-            wb = openpyxl.load_workbook(r"C:\Users\carlo\Downloads\26.05.23.xlsx", data_only=True)
-
-            ws = wb.active
-
-            max_row = ws.max_row
-            max_col = ws.max_column
-
-            for row in ws.iter_rows(max_row=max_row, max_col=max_col):
-                # print(row[0].value, row[1].value)
-                a = Remessa(remessa = row[0].value)
-                a.save()
+            return simple_upload(request)
 
         return render(request,'remessa.html')
 
+def simple_upload(request):
+    if request.method == 'POST':
+        remessa_resources = RemessaResources()
+        dataset = Dataset()
+        new_remessa = request.FILES['file']
+
+        if not new_remessa.name.endswith('xlsx'):
+            messages.info(request,'wrong format')
+            return render(request, 'remessa.html')
+        import_data = dataset.load(new_remessa.read(), format='xlsx')
+        for data in import_data:
+            value = Remessas(
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+                data[4],
+                data[5],
+                data[6]
+                )
+            value.save()
+        return render(request, 'remessa.html')
 def disponibilidade(request):
     veiculos = Frota.objects.all()
     escalas = Escala.objects.filter(status='EM ENTREGA').all()
