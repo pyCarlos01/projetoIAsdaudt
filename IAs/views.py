@@ -89,7 +89,7 @@ def simple_upload(request):
     if request.method == 'POST':
         remessa_resources = RemessaResources()
         dataset = Dataset()
-        new_remessa = request.FILES['file']
+        new_remessa = request.FILES['myfile']
 
         if not new_remessa.name.endswith('xlsx'):
             messages.info(request,'wrong format')
