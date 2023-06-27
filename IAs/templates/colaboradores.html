@@ -242,7 +242,7 @@ Colaboradores
 
     <div class="modal fade" id="horarioHE" tabindex="-1" aria-labelledby="horarioHE1" aria-hidden="true">
         <div class="modal-dialog">
-            <form name="Form_hs" id="Form_hs" action="" method="POST" autocomplete="off">
+            <form name="Form_hs" id="Form_hs" action="" method="POST" autocomplete="off" enctype="multipart/form-data">
                     {% csrf_token %}
                 <div class="modal-content bg-white text-black dark:bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl">
                     <div class="modal-header bg-blue-600 text-white">
@@ -251,10 +251,6 @@ Colaboradores
                     </div>
                     <div class="modal-body">
                         <input type="file" name="arq_he" id="arq_he" required>
-                        <br><br>
-                        <label for="data_he"> Selecione a Data:</label>
-                        <br><br>
-                        <input name="data_he" id="data_he" type="date" class="form-control rounded-md" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Fechar</button>

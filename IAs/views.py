@@ -141,7 +141,7 @@ def escala(request):
     periodos = Colaboradores.objects.all()
     listas = Frota.objects.filter(status = 'DISPONÍVEL', empresa = 'IPIRANGA').all()
     escalas = Escala.objects.order_by('-data').all()
-    ajudantes = Colaboradores.objects.order_by('status1', 'tempo_s').reverse().filter(funcao='AJUDANTE', status = 'DISPONÍVEL').all()
+    ajudantes = Colaboradores.objects.order_by('status1', 'tempo_s').reverse().filter(status = 'DISPONÍVEL').all()
     motoristas = Colaboradores.objects.order_by('status1', 'tempo_s').reverse().all()
 
     # Prazo de folgas, atestados, afastamentos e férias...
@@ -398,50 +398,45 @@ def controle_func(request):
             colaboradores.update(nome = nome_alt, nome_guerra = nome_guerra_alt, funcao = funcao_alt, status = status_alt, periodo = prazo_alt, empresa = empresa_alt)
             return redirect('IAs:colaboradores')
         else:
-            horas_extras(request, data_he, arq_he)
+            horas_extras(request)
 
     return render(request, 'colaboradores.html', {'funcionarios': funcionarios,'folgas': folgas, 'atestados': atestados, 'afastados': afastados,'em_rota': em_rota, 'disponiveis': disponiveis,'ferias': ferias})
 
-def horas_extras(request, data, arq):
+def horas_extras(request):
     # try:
-    data = str(data).replace('-','')
-    data = str(data)[-2:] + '.' + str(data)[4:-2]
+        dataset = Dataset()
+        new_remessa = request.FILES['arq_he']
 
-    # caminho = r"C:\Users\{}\Downloads\{}".format(os.getlogin(), arq)
+        if not new_remessa.name.endswith('xlsx'):
+            messages.info(request, 'wrong format')
+            return redirect('IAs:homefrotas')
 
-    # if 'HORAS' in str(arq):
-    #     df = pd.read_excel(arq, sheet_name=data)
-    #     df = df[['Unnamed: 3', 'Unnamed: 7', 'Unnamed: 8']]
-    #     print(df)
-    #     for i in df.iterrows():
-    #         # print(i[1][0], i[1][1], i[1][2])
-    #         if 'HORAS' in str(i[1][1]):
-    #             pass
-    #         else:
-    #             hora = str(i[1][2])[:2]
-    #             minuto = str(i[1][2])[3:5]
-    #             hora_n = str(i[1][1])[:2]
-    #             minuto_n = str(i[1][1])[3:5]
-    #
-    #             if 'na' in hora:
-    #                 if 'na' in hora_n:
-    #                     pass
-    #                 else:
-    #                     segundos = int(hora_n) * 3600 + int(minuto_n) * 60
-    #                     bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-    #                     bd.update(horas=str(i[1][1]), tempo_s='-' + str(segundos), status1='NEGATIVO')
-    #             else:
-    #                 segundos = int(hora) * 3600 + int(minuto) * 60
-    #                 bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-    #                 bd.update(horas=str(i[1][2]), tempo_s=segundos, status1 = 'POSITIVO')
-    #
-    #             if '00:00:00' in str(i[1][1]) and '00:00:00' in str(i[1][2]):
-    #                 bd = Colaboradores.objects.filter(nome_guerra=str(i[1][0]))
-    #                 bd.update(status1='NULO')
-    #     # return redirect('IAs:colaboradores')
-    # else:
+        import_data = dataset.load(new_remessa.read(), format='xlsx')
+        for data in import_data:
+            # print(data[3], data[7], data[8])
+            if 'HORAS' in str(data[3]) or 'Nome de Guerra' in str(data[3]) or data[3] == None:
+                pass
+            else:
+                hora = str(data[8])[:2]
+                minuto = str(data[8])[3:5]
+                hora_n = str(data[7])[:2]
+                minuto_n = str(data[7])[3:5]
+                if 'No' in hora:
+                    if 'No' in hora_n:
+                        pass
+                    else:
+                        segundos = int(hora_n) * 3600 + int(minuto_n) * 60
+                        bd = Colaboradores.objects.filter(nome_guerra=str(data[3]))
+                        bd.update(horas=str(data[7]), tempo_s='-' + str(segundos), status1='NEGATIVO')
+                else:
+                    segundos = int(hora) * 3600 + int(minuto) * 60
+                    bd = Colaboradores.objects.filter(nome_guerra=str(data[3]))
+                    bd.update(horas=str(data[8]), tempo_s=segundos, status1 = 'POSITIVO')
+
+                if '00:00:00' in str(data[7]) and '00:00:00' in str(data[8]):
+                    bd = Colaboradores.objects.filter(nome_guerra=str(data[3]))
+                    bd.update(status1='NULO')
+            # return redirect('IAs:colaboradores')
+    # except:
     #     return redirect('IAs:homefrotas')
-    #
-    # # except:
-    # #     return redirect('IAs:homefrotas')
-    return render(request, 'colaboradores.html')
+        return render(request, 'colaboradores.html')
