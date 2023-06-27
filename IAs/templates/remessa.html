@@ -13,8 +13,8 @@ Disponibilidade
         <div class="z-10 h-full py-32 md:py-0 text-gray-100 text-center flex items-center flex-col">
          <form action="{% url 'IAs:upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="myfile">
-            <button type="submit">Upload</button>
+            <input type="file" name="myfile" class="form-control">
+            <button type="submit" class="btn btn-outline-primary">Upload</button>
              {{ form|crispy }}
          </form>
         </div>
