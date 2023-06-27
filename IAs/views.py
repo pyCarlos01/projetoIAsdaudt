@@ -86,19 +86,20 @@ def simple_upload(request):
             messages.info(request,'wrong format')
             return redirect('IAs:homefrotas')
         import_data = dataset.load(new_remessa.read(), format='xlsx')
-        value = []
         for data in import_data:
-            value.append(([data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8]]))
-            # value = Remessa(
-            #     str(data[1]).replace('AMPM.',''),
-            #     str(data[5]),
-            #     str(data[6]),
-            #     str(data[2]),
-            #     str(data[7]),
-            #     str(data[8])
-            #     )
-            # value.save()
-    return render(request, 'remessa.html', {'data':value})
+            if data[6] == None:
+                pass
+            else:
+                value = Remessa(Remessa.objects.count(),
+                    str(data[0]).replace('AMPM.',''),
+                    str(data[4]),
+                    str(data[5]),
+                    str(data[1]),
+                    str(data[6]),
+                    str(data[7]).split('.')[0]
+                    )
+                value.save()
+    return render(request, 'remessa.html')
 def disponibilidade(request):
     veiculos = Frota.objects.all()
     escalas = Escala.objects.filter(status='EM ENTREGA').all()
