@@ -87,8 +87,9 @@ def simple_upload(request):
             return redirect('IAs:homefrotas')
         import_data = dataset.load(new_remessa.read(), format='xlsx')
         for data in import_data:
-            if data[6] == None:
+            if data[0] == None or Remessa.objects.filter(remessa = str(data[0]).replace('AMPM.','')).exists():
                 pass
+                print(data[0], " - ", data[1], " - ",data[4], " - ", data[5], " - ", data[6], " - ", data[7])
             else:
                 value = Remessa(Remessa.objects.count(),
                     str(data[0]).replace('AMPM.',''),
