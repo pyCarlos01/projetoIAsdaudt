@@ -6,8 +6,8 @@ function novaRemessa(dados) {
 function remessaEncaixe(dados) {
 // Limpar a lista
     document.getElementById('dialog_remessas').showModal();
-    const list = document.getElementById('ulremessas');
-    list.innerHTML = '';
+    const li = document.getElementById('ulremessas');
+    li.innerHTML = '';
     remessas.forEach(rem =>{
         if('DISPONÍVEL' == rem.status){
             var li = document.createElement('li');
