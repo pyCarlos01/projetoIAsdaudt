@@ -1,5 +1,6 @@
 function novaRemessa(dados) {
     document.getElementById('dialog_remessa').showModal();
+    console.log('oi');
 }
 
 // Dialog remessas
