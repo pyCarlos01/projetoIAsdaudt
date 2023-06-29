@@ -5,7 +5,7 @@ function novaRemessa(dados) {
 // Dialog remessas
 function remessaEncaixe(dados) {
 // Limpar a lista
-    const list = document.getElementById('ulfrotas' + dados);
+    const list = document.getElementById('ulremessas' + dados);
     list.innerHTML = '';
     document.getElementById('dialog_remessas').showModal();
     remessas.forEach(rem =>{
